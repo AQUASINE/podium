@@ -91,7 +91,7 @@ class YouTube:
             print(f"Couldn't find the livestream chat. Is the channel not live? url: {live_url}")
             time.sleep(5)
             exit(1)
-
+        
         # Fetch live chat page
         res = self.session.get(f'https://youtube.com/live_chat?continuation={iframe_continuation}')
         if not res.ok:
@@ -125,7 +125,7 @@ class YouTube:
                 "isDocumentHidden": False
             },
         }
-        print("Connected.")
+        print("Connected to user")
 
     def fetch_messages(self):
         payload_bytes = bytes(json.dumps(self.payload), "utf8")
@@ -185,7 +185,8 @@ class YouTube:
             for item in res:
                 msg = {
                     'username': item['author'],
-                    'message': ''
+                    'message': '',
+                    'channelId': self.channel_id
                 }
                 for part in item['content']:
                     if 'text' in part:
@@ -194,3 +195,4 @@ class YouTube:
                         msg['message'] += part['emoji']['emojiId']
                 messages.append(msg)
         return messages
+    
