@@ -43,7 +43,7 @@ class YouTube:
         time.sleep(delay)
         self.youtube_connect(self.channel_id, self.stream_url)
 
-    def youtube_connect(self, channel_id, stream_url=None):
+    def youtube_connect(self, channel_id, channel_name, stream_url=None):
         print("Connecting to YouTube...")
 
         self.channel_id = channel_id
@@ -125,7 +125,7 @@ class YouTube:
                 "isDocumentHidden": False
             },
         }
-        print("Connected to user")
+        print("YT: Joined", channel_name)
 
     def fetch_messages(self):
         payload_bytes = bytes(json.dumps(self.payload), "utf8")

@@ -1,6 +1,14 @@
 <template>
-  <div class="overflow-y-scroll max-h-screen">
-    Messages
+  <div class="flex-1">
+    <div class="flex">
+      <div class="container__message-item text-left p-3">
+        Messages
+      </div>
+      <div class="p-3">
+        Score
+      </div>
+    </div>
+  <div class="overflow-y-scroll container__messages">
     <div v-for="message in messages" class="bg3 item__message flex">
       <div class="flex w-full">
         <div class="p-3 container__message-item">
@@ -8,16 +16,17 @@
           {{ message.user }}
           </span>: {{ message.message }}
           <div class="pt-2">
-            <span v-for="tag in message.tags" class="bg4 p-1 pr-3 pl-3 w-min rounded-full whitespace-nowrap mr-1">
+            <span v-for="tag in message.tags" class="bg4 p-1 pr-3 pl-3 w-min rounded-full whitespace-nowrap mr-1 text-mute">
               {{ tag }}
             </span>
           </div>
         </div>
-        <div class="flex-1 p-1 item__score">
+        <div class="flex-1 p-3 item__score">
           {{ message.weight }}
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 <script>
@@ -63,4 +72,7 @@ select:hover {
   width: 80%;
 }
 
+.container__messages {
+  max-height: calc(100vh - 100px)
+}
 </style>
