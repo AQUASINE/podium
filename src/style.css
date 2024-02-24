@@ -1,3 +1,5 @@
+@import "vue-select/dist/vue-select.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,6 +28,22 @@
   --bg2: #312d38;
   --bg3: #3f374f;
   --bg4: #59506c;
+
+
+  --vs-controls-color: var(--text-mute);
+  --vs-border-color: var(--text);
+
+  --vs-dropdown-bg: var(--bg2);
+  --vs-dropdown-color: var(--text);
+  --vs-dropdown-option-color: var(--text);
+
+  --vs-selected-bg: var(--primary);
+  --vs-selected-color: #eeeeee;
+
+  --vs-search-input-color: #eeeeee;
+
+  --vs-dropdown-option--active-bg: var(--primary);
+  --vs-dropdown-option--active-color: #eeeeee;
 }
 
 a {
@@ -117,6 +135,11 @@ code {
   padding: 2px 4px;
   margin: 0 4px;
   border-radius: 4px;
+}
+
+
+>>> {
+
 }
 
 .card {

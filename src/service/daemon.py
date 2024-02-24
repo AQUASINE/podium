@@ -10,7 +10,7 @@ from websocket import create_connection
 from youtube import YouTube
 from pprint import pprint
 
-DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['AQUASINE'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie'}, [PodiumRule()])
+DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['dokibird', 'jarvisjohnson'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie','UCMnULQ5F6kLDAHxofDWIbrw': 'PirateSoftware', }, [PodiumRule(action=random_score)])
 
 BOT_USERNAME = 'AQUASINE'
 YOUTUBE_FETCH_INTERVAL = 1
@@ -41,7 +41,7 @@ class Bot(twitchio.Client):
         return await super().event_ready()
 
     async def event_error(self, error: Exception, data: str = None):
-        # print(error)
+        print(error)
         return await super().event_error(error, data)
 
     async def event_message(self, message):
@@ -64,21 +64,26 @@ connected_websockets = []
 async def process_message(type, channel, user, message):
     # send message to all connected websockets
     channel_name = channel
-    name_tag = None
+    id_tag = None
     if type == 'yt':
         channel_name = active_configuration.youtube_channels[channel]
         id_tag = f"ytid:{channel}"
     tags = [type, type + ":" + channel_name]
     if id_tag is not None:
         tags.append(id_tag)
-    print(f"type: {type}, channel: {channel_name}, user: {user}, message: {message}")
+
+    result = PodiumRuleResult(message, 1.0, tags, {})
+    for rule in active_configuration.rules:
+        rule.process_message(result)
+    
+    print(f"type: {type}, channel: {channel_name}, user: {user}, message: {message}, score: {result.score}")
     obj_message = json.dumps({
         'type': type,
         'channel': channel,
         'channel_name': channel_name,
         'user': user,
         'message': message,
-        'weight': 1.0,
+        'weight': result.score,
         'timestamp': time.time(),
         'tags': tags
     })
@@ -108,17 +113,39 @@ app = Flask(__name__)
 def get_twitch_channels():
     return json.dumps(active_configuration.twitch_channels)
 
+@app.route('/reconnect')
+def reconnect():    
+    global yt_thread, ttv_thread, bot
+    # stop threads
+    print("join youtube thread")
+    yt_thread.join()
+    print("join twitch thread")
+    bot.close()
+    ttv_thread.join()
+
+    print("close bot")
+    # stop bot
+
+    print("reconnect")
+    connect()
+
+yt_thread = None
+ttv_thread = None
+bot = None
+def connect():
+    # start youtube thread
+    global yt_thread, ttv_thread, bot
+    yt_thread = th.Thread(target=asyncio.run, args=(run_youtube(),))
+    yt_thread.start()
+
+    bot = Bot()
+    ttv_thread = th.Thread(target=run_bot, args=(bot,))
+    ttv_thread.start()
+
+
 # if __name__ == "__main__":
 loop = asyncio.get_event_loop()
 start_server = serve(ws_handler, "localhost", 8765)
 loop.run_until_complete(start_server)
 
-# start youtube thread
-yt_thread = th.Thread(target=asyncio.run, args=(run_youtube(),))
-yt_thread.start()
-
-bot = Bot()
-ttv_thread = th.Thread(target=run_bot, args=(bot,))
-ttv_thread.start()
-
-
+connect()

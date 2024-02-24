@@ -7,20 +7,20 @@
           Podium
         </div>
       </div>
-      <div class="absolute flex justify-center items-center w-full top-0 pt-1.5">
+      <div class="absolute flex justify-center items-center w-full top-0 pt-2">
         <div>
           Active Configuration
         </div>
-        <select class="ml-3">
-          <option>Default</option>
-          <option>Default 2</option>
-        </select>
+        <div class="ml-3 container__configuration-select">
+        <VueSelect :options="['Default','Yummers']" class="item__configuration-select"></VueSelect>
+        </div>
       </div>
     </div>
     <div class="flex">
       <div class="flex-1">
+        Left
       </div>
-    <MessagesView :messages="messages"/>
+        <MessagesView :messages="messages"/>
     </div>
   </div>
 </template>
@@ -29,11 +29,14 @@
 
 
 import MessagesView from "./MessagesView.vue";
+import VueSelect from 'vue-select';
+
 
 export default {
   name: 'App',
-  components: {MessagesView},
+  components: {MessagesView, VueSelect},
   mounted() {
+    window.addEventListener('resize', this.handleResize);
     this.getMessages();
   },
   data() {
@@ -48,13 +51,30 @@ export default {
         console.log('Message from server ', event.data);
         this.pushMessage(event.data);
       });
+
+      setInterval(() => {
+        // check if socket is in the closed state
+        if (this.socket.readyState === 3) {
+          console.log('Socket is closed');
+          this.socket = new WebSocket('ws://localhost:8765');
+          this.socket.addEventListener('message', event => {
+            console.log('Message from server ', event.data);
+            this.pushMessage(event.data);
+          });
+        }
+
+      }, 3000);
     },
     pushMessage(message) {
       const decodedMessage = JSON.parse(message);
-      if (this.messages.length > 50) {
-        this.messages.shift();
+      if (this.messages.length > 500) {
+        // remove 100 messages
+        this.messages = this.messages.slice(100);
       }
       this.messages.push(decodedMessage);
+    },
+    handleResize() {
+      this.$forceUpdate();
     }
   },
 }
@@ -62,6 +82,15 @@ export default {
 
 
 <style>
+
+.item__configuration-select .vs__search::placeholder,
+.item__configuration-select .vs__dropdown-toggle,
+.item__configuration-select .vs__dropdown-menu {
+  background: var(--primary-dark);
+  border: none;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
 
 select {
   border-radius: 8px;
@@ -82,4 +111,11 @@ select:hover {
   border-color: var(--primary)
 }
 
+.container__configuration-select {
+  width: 400px;
+  max-width: 33vw;
+}
+
+.item__configuration-select {
+}
 </style>
