@@ -81,6 +81,28 @@ connected_websockets = []
 
 processing_messages = []
 
+users = []
+recent_messages = []
+
+def add_recent_message(message):
+    recent_messages.append(message)
+    if len(recent_messages) > 500:
+        recent_messages.pop(0)
+        
+def set_user_recent(type, user, message):
+    # object with type, user, message, timestamp, and user_score
+    user_obj = None
+    for u in users:
+        if u['user'] == user:
+            user_obj = u
+            break
+    if user_obj is None:
+        user_obj = {'type': type, 'user': user, 'last_message': message, 'timestamp': time.time(), 'user_score': 0}
+        users.append(user_obj)
+    else:
+        user_obj['last_message'] = message
+        user_obj['timestamp'] = time.time()
+
 async def process_message(type, channel, user, message):
     # send message to all connected websockets
     channel_name = channel
@@ -91,6 +113,9 @@ async def process_message(type, channel, user, message):
     tags = [type, type + ":" + channel_name]
     if id_tag is not None:
         tags.append(id_tag)
+
+    add_recent_message(message)
+    set_user_recent(type, user, message)
 
     result = PodiumRuleResult(message, 1.0, tags, {})
     now = time.time()

@@ -1,5 +1,6 @@
 import random
 import asyncio
+import re
 
 class PodiumConfiguration():
     def __init__(self, id, twitch_channels=[], youtube_channels={}, rules=[]):
@@ -85,8 +86,75 @@ def subtract_score(result, val):
 def cond_probability(result, chance):
     return random.random() <= chance
 
-def cond_tag(result, tag):
+def cond_has_tag(result, tag):
     return tag in result.tags
+
+def cond_exact_match(result, match):
+    result = result.message.strip()
+    match = match.strip()
+    return result == match
+
+def cond_contains(result, match):
+    result = result.message.strip()
+    match = match.strip()
+    return match in result
+
+def cond_contains_any(result, matches):
+    result = result.message.strip()
+    for match in matches:
+        match = match.strip()
+        if match in result:
+            return True
+    return False
+
+def cond_regex(result, regex):
+    return re.search(regex, result.message) is not None
+
+def compare_value(value1, value2, operator):
+    if operator == '==':
+        return value1 == value2
+    elif operator == '!=':
+        return value1 != value2
+    elif operator == '>':
+        return value1 > value2
+    elif operator == '<':
+        return value1 < value2
+    elif operator == '>=':
+        return value1 >= value2
+    elif operator == '<=':
+        return value1 <= value2
+    return False
+
+def cond_message_length(result, operator, length):
+    return compare_value(len(result.message), length, operator)
+
+def cond_score(result, operator, score):
+    return compare_value(result.score, score, operator)
+
+def cond_logic_not(result, func):
+    return not func(result)
+
+def cond_logic_and(result, func1, func2):
+    return func1(result) and func2(result)
+
+def cond_logic_or(result, func1, func2):
+    return func1(result) or func2(result)
+
+def cond_logic_xor(result, func1, func2):
+    return func1(result) ^ func2(result)
+
+def action_set_tag(result, tag):
+    result.tags.append(tag)
+
+def action_remove_tag(result, tag):
+    result.tags.remove(tag)
+    
+def action_set_metadata(result, key, value):
+    result.metadata[key] = value
+
+def action_remove_metadata(result, key):
+    del result.metadata[key]
+
 
 async def gpt_score(result, gpt_client, complete_func, default=0.0):
     result.ready_next = False
@@ -101,4 +169,3 @@ async def gpt_score(result, gpt_client, complete_func, default=0.0):
     complete_func(result, score)
 
     result.ready_next = True
-
