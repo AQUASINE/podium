@@ -5,27 +5,45 @@ import time
 import threading as th
 from podium import *
 from flask import Flask
+from gptclient import GPTClient
 from websockets.server import serve
 from websocket import create_connection
 from youtube import YouTube
 from pprint import pprint
 
-DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['dokibird', 'jarvisjohnson'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie','UCMnULQ5F6kLDAHxofDWIbrw': 'PirateSoftware', }, [PodiumRule(action=random_score)])
-
 BOT_USERNAME = 'AQUASINE'
 YOUTUBE_FETCH_INTERVAL = 1
 
-configurations = [DEFAULT_CONFIGURATION]
-active_configuration = DEFAULT_CONFIGURATION
-
 # read bot token from config.json. if it doesn't exist, tell the user to create it
 with open('config.json', 'r') as f:
+    config = json.load(f)
     try:
-        config = json.load(f)
         BOT_TOKEN = config['TWITCH_OAUTH']
     except KeyError:
         print("config.json is missing the TWITCH_OAUTH key. Please create a bot account and add the OAuth token to config.json")
         exit(1)
+    try:
+        OPENAI_KEY = config['OPENAI_KEY']
+    except KeyError:
+        print("config.json is missing the OPENAI_KEY key. Please create an OpenAI API key and add it to config.json")
+        exit(1)
+
+gpt_client = GPTClient(OPENAI_KEY)
+
+DEFAULT_RULES = [
+    PodiumRule(
+        name="Set Score",
+        action=[set_score, 10]
+        ),
+    PodiumRule(
+        name="GPT multiply",
+        action=[gpt_score, gpt_client, multiply_score, 0.5]
+    )
+]
+DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['jerma985'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie','UCMnULQ5F6kLDAHxofDWIbrw': 'PirateSoftware'}, DEFAULT_RULES)
+
+configurations = [DEFAULT_CONFIGURATION]
+active_configuration = DEFAULT_CONFIGURATION
 
 class Bot(twitchio.Client):
     def __init__(self):
@@ -61,6 +79,8 @@ async def run_youtube():
 
 connected_websockets = []
 
+processing_messages = []
+
 async def process_message(type, channel, user, message):
     # send message to all connected websockets
     channel_name = channel
@@ -73,21 +93,78 @@ async def process_message(type, channel, user, message):
         tags.append(id_tag)
 
     result = PodiumRuleResult(message, 1.0, tags, {})
-    for rule in active_configuration.rules:
-        rule.process_message(result)
-    
-    print(f"type: {type}, channel: {channel_name}, user: {user}, message: {message}, score: {result.score}")
+    now = time.time()
+
+    # print('new message', type, channel, user, message)
     obj_message = json.dumps({
         'type': type,
         'channel': channel,
         'channel_name': channel_name,
         'user': user,
         'message': message,
-        'weight': result.score,
+        'weight': 0,
         'timestamp': time.time(),
         'tags': tags
     })
-    await send_message(obj_message)
+
+    processing_entry = {
+        'timestamp': now,
+        'result': result,
+        'rule': 0,
+        'started': False,
+        'obj': obj_message
+    }
+    processing_messages.append(processing_entry)
+    
+
+async def process_periodic():
+    print("Processing periodic")
+    while True:
+        await asyncio.sleep(0.05)
+        await execute_processing()
+
+async def execute_processing():
+    if len(active_configuration.rules) == 0:
+        return
+    
+    for entry in processing_messages:
+        # if the message is too old, throw it out
+        if time.time() - entry['timestamp'] > 60:
+            processing_messages.remove(entry)
+            continue
+
+        result = entry['result']
+        
+        if entry['rule'] == 0 and not entry['started']:
+            rule = active_configuration.rules[entry['rule']]    
+            asyncio.create_task(rule.process_message(result))
+            entry['started'] = True
+            
+            
+        elif result.ready_next:
+            entry['rule'] += 1
+            if entry['rule'] >= len(active_configuration.rules):
+                await finish_processing_entry(entry)
+                continue
+        
+            rule = active_configuration.rules[entry['rule']]
+            asyncio.create_task(rule.process_message(result))
+        
+
+async def finish_processing_entry(entry):
+    obj = entry['obj']
+    score = float(entry['result'].score)
+    metadata = entry['result'].metadata
+
+    # replace the score with the new score
+    obj = json.loads(obj)
+    obj['weight'] = score
+    obj['metadata'] = metadata
+    print(obj)
+
+    processing_messages.remove(entry)
+    
+    await send_message(json.dumps(obj))
 
 
 async def ws_handler(websocket, path):
@@ -105,7 +182,6 @@ async def send_message(message):
 
 def run_bot(bot):
     bot.run()
-
 
 app = Flask(__name__)
 
@@ -129,18 +205,31 @@ def reconnect():
     print("reconnect")
     connect()
 
+processing_thread = None
+gpt_thread = None
 yt_thread = None
 ttv_thread = None
 bot = None
+
+async def run_gpt():
+    await gpt_client.process_queue()
+    
 def connect():
     # start youtube thread
-    global yt_thread, ttv_thread, bot
+    global yt_thread, ttv_thread, gpt_thread, bot
     yt_thread = th.Thread(target=asyncio.run, args=(run_youtube(),))
     yt_thread.start()
 
     bot = Bot()
     ttv_thread = th.Thread(target=run_bot, args=(bot,))
     ttv_thread.start()
+
+    gpt_thread = th.Thread(target=asyncio.run, args=(run_gpt(),))
+    gpt_thread.start()
+
+    processing_thread = th.Thread(target=asyncio.run, args=(process_periodic(),))
+    processing_thread.start()
+    
 
 
 # if __name__ == "__main__":
@@ -149,3 +238,7 @@ start_server = serve(ws_handler, "localhost", 8765)
 loop.run_until_complete(start_server)
 
 connect()
+run_gpt()
+
+while True:
+    pass

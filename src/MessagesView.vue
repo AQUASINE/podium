@@ -16,10 +16,13 @@
       <div v-for="message in messages" class="bg3 item__message flex">
         <div class="flex w-full">
           <div class="p-3 container__message-item flex flex-col">
-            <div>
+            <div v-if="!hidden">
           <span class="font-bold">
           {{ message.user }}
           </span>: {{ message.message }}
+            </div>
+            <div v-else>
+              <div class="bg4 p-3 rounded-lg">Hidden</div>
             </div>
             <div class="inline-flex flex-wrap">
             <span v-for="tag in message.tags"
@@ -61,12 +64,16 @@ export default {
   },
   data() {
     return {
-      locked: false
+      locked: false,
+      hidden: false
     }
   },
   methods: {
     toggleLock() {
       this.locked = !this.locked;
+    },
+    toggleHidden() {
+      this.hidden = !this.hidden;
     },
     formatScore(score) {
       // 3 decimal places
