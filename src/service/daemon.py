@@ -2,7 +2,10 @@ import twitchio
 import asyncio
 import json
 import time
+import nltk
+import os
 import threading as th
+import urllib.request
 from podium import *
 from flask import Flask
 from gptclient import GPTClient
@@ -10,6 +13,13 @@ from websockets.server import serve
 from websocket import create_connection
 from youtube import YouTube
 from pprint import pprint
+from nltk.corpus import brown
+
+nltk.download([
+    "stopwords",
+    "vader_lexicon",
+    'brown'
+])
 
 BOT_USERNAME = 'AQUASINE'
 YOUTUBE_FETCH_INTERVAL = 1
@@ -35,15 +45,56 @@ DEFAULT_RULES = [
         name="Set Score",
         action=[set_score, 10]
         ),
+    # PodiumRule(
+    #     name="GPT multiply",
+    #     action=[gpt_score, gpt_client, multiply_score, 0.5]
+    # )
     PodiumRule(
-        name="GPT multiply",
-        action=[gpt_score, gpt_client, multiply_score, 0.5]
+        name="Sentiment Analysis",
+        action=[analyze_sentiment, [multiply_score, add_user_score]]
     )
 ]
-DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['jerma985'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie','UCMnULQ5F6kLDAHxofDWIbrw': 'PirateSoftware'}, DEFAULT_RULES)
+DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['kitboga'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie','UCMnULQ5F6kLDAHxofDWIbrw': 'PirateSoftware'}, DEFAULT_RULES)
+# DEFAULT_CONFIGURATION = PodiumConfiguration('Default', [], {}, DEFAULT_RULES)
 
 configurations = [DEFAULT_CONFIGURATION]
 active_configuration = DEFAULT_CONFIGURATION
+
+emote_set_ids_7tv = [
+    "62f2ff9bc7c480c108ab2212"
+]
+
+emote_sets = {}
+
+endpoint_7tv_emotes = "https://7tv.io/v3/emote-sets/"
+
+async def fetch_7tv_emotes():
+    for set_id in emote_set_ids_7tv:
+        url = endpoint_7tv_emotes + set_id
+        response = urllib.request.urlopen(url)
+        emote_sets[set_id] = json.loads(response.read().decode('utf-8'))
+        print("Fetched 7TV emotes for set", set_id)
+
+        # loop through and get a list of all emote names
+        emote_names = []
+        for emote in emote_sets[set_id]['emotes']:
+            emote_names.append(emote['name'])
+
+        print("Fetched emote names")
+        
+        # find emote names that are common words
+        to_ignore = []
+        
+        # load common_words.txt from the assets folder, which is in the same directory as this file
+        path = os.path.join(os.path.dirname(__file__), 'assets', 'common_words.txt')
+        with open(path, 'r') as f:
+            common_words = f.read().splitlines()
+        
+        for emote_name in emote_names:
+            if emote_name.lower() in common_words:
+                to_ignore.append(emote_name)
+
+        print("Ignoring the following emotes:", to_ignore)
 
 class Bot(twitchio.Client):
     def __init__(self):
@@ -56,6 +107,8 @@ class Bot(twitchio.Client):
     async def event_ready(self):
         print('Daemon is ready to connect to Twitch channels.')
         await self.join_channels(active_configuration.twitch_channels)
+        await fetch_7tv_emotes()
+        
         return await super().event_ready()
 
     async def event_error(self, error: Exception, data: str = None):
@@ -67,6 +120,9 @@ class Bot(twitchio.Client):
 
 
 async def run_youtube():
+    if len(active_configuration.youtube_channels) == 0:
+        print("No YouTube channels to connect to")
+        return
     t = YouTube()
     channel_id = list(active_configuration.youtube_channels.keys())[0]
     channel_name = active_configuration.youtube_channels[channel_id]
@@ -81,7 +137,6 @@ connected_websockets = []
 
 processing_messages = []
 
-users = []
 recent_messages = []
 
 def add_recent_message(message):
@@ -91,17 +146,17 @@ def add_recent_message(message):
         
 def set_user_recent(type, user, message):
     # object with type, user, message, timestamp, and user_score
-    user_obj = None
-    for u in users:
-        if u['user'] == user:
-            user_obj = u
-            break
-    if user_obj is None:
-        user_obj = {'type': type, 'user': user, 'last_message': message, 'timestamp': time.time(), 'user_score': 0}
-        users.append(user_obj)
-    else:
-        user_obj['last_message'] = message
-        user_obj['timestamp'] = time.time()
+    # users is a map of user name to user object
+
+    user_id = f"{type}:{user}"
+
+    if user_id not in users:
+        users[user_id] = {'type': type, 'user': user, 'last_message': message, 'timestamp': time.time(), 'user_score': 0}
+        return
+    
+    user_obj = users[user_id]
+    user_obj['last_message'] = message
+    user_obj['timestamp'] = time.time()
 
 async def process_message(type, channel, user, message):
     # send message to all connected websockets
@@ -117,7 +172,9 @@ async def process_message(type, channel, user, message):
     add_recent_message(message)
     set_user_recent(type, user, message)
 
-    result = PodiumRuleResult(message, 1.0, tags, {})
+    user_id = f"{type}:{user}"
+
+    result = PodiumRuleResult(message, 1.0, user_id, tags, {})
     now = time.time()
 
     # print('new message', type, channel, user, message)
@@ -210,9 +267,20 @@ def run_bot(bot):
 
 app = Flask(__name__)
 
+def run_flask():
+    app.run(host='0.0.0.0', port=5000)
+
 @app.route('/')
-def get_twitch_channels():
-    return json.dumps(active_configuration.twitch_channels)
+def index():
+    return "Podium API is running!"
+
+@app.route('/get_recent_messages')
+def get_recent_messages():
+    return recent_messages
+
+@app.route('/get_users')
+def get_users():
+    return users
 
 @app.route('/reconnect')
 def reconnect():    
@@ -234,6 +302,7 @@ processing_thread = None
 gpt_thread = None
 yt_thread = None
 ttv_thread = None
+flask_thread = None
 bot = None
 
 async def run_gpt():
@@ -254,6 +323,9 @@ def connect():
 
     processing_thread = th.Thread(target=asyncio.run, args=(process_periodic(),))
     processing_thread.start()
+    
+    flask_thread = th.Thread(target=run_flask)
+    flask_thread.start()
     
 
 

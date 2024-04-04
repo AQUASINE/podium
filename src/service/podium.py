@@ -1,6 +1,8 @@
 import random
 import asyncio
 import re
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 class PodiumConfiguration():
     def __init__(self, id, twitch_channels=[], youtube_channels={}, rules=[]):
@@ -48,10 +50,11 @@ class PodiumRule():
         return func(*args, **kwargs)
 
 class PodiumRuleResult():
-    def __init__(self, message, score, tags, metadata):
+    def __init__(self, message, score, user_id, tags, metadata):
         self.message = message
         self.score = score
         self.tags = tags
+        self.user_id = user_id
         self.metadata = metadata
         self.ready_next = False
     
@@ -82,6 +85,23 @@ def add_score(result, val):
 def subtract_score(result, val):
     result.score -= val
     result.ready_next = True
+
+analyzer = SentimentIntensityAnalyzer()
+def analyze_sentiment(result, complete_funcs):
+    message = result.message
+    # remove stop words
+    words = [word for word in message.split() if word.lower() not in nltk.corpus.stopwords.words('english')]
+    message = ' '.join(words)
+    
+    sentiment_scores = analyzer.polarity_scores(message)
+    score = sentiment_scores['compound']
+
+    for complete_func in complete_funcs:
+        complete_func(result, score)
+
+users = {}
+def add_user_score(result, score):
+    users[result.user_id]['user_score'] += score
 
 def cond_probability(result, chance):
     return random.random() <= chance
