@@ -119,16 +119,16 @@ class Bot(twitchio.Client):
         await process_message('ttv', message.channel.name, message.author.name, message.content)
 
 
+youtube = YouTube()
 async def run_youtube():
     if len(active_configuration.youtube_channels) == 0:
         print("No YouTube channels to connect to")
         return
-    t = YouTube()
     channel_id = list(active_configuration.youtube_channels.keys())[0]
     channel_name = active_configuration.youtube_channels[channel_id]
-    t.youtube_connect(channel_id, channel_name)
+    youtube.youtube_connect(channel_id, channel_name)
     while True:
-        messages = t.twitch_receive_messages()
+        messages = youtube.twitch_receive_messages()
         for msg in messages:
             await process_message('yt', msg['channelId'], msg['username'], msg['message'])
         time.sleep(YOUTUBE_FETCH_INTERVAL)
@@ -283,20 +283,18 @@ def get_users():
     return users
 
 @app.route('/reconnect')
-def reconnect():    
+async def reconnect():    
     global yt_thread, ttv_thread, bot
     # stop threads
-    print("join youtube thread")
-    yt_thread.join()
     print("join twitch thread")
-    bot.close()
-    ttv_thread.join()
+    await bot.close()
 
     print("close bot")
     # stop bot
 
     print("reconnect")
-    connect()
+    youtube.reconnect(0)
+    connect_twitch()
 
 processing_thread = None
 gpt_thread = None
@@ -310,14 +308,7 @@ async def run_gpt():
     
 def connect():
     # start youtube thread
-    global yt_thread, ttv_thread, gpt_thread, bot
-    yt_thread = th.Thread(target=asyncio.run, args=(run_youtube(),))
-    yt_thread.start()
-
-    bot = Bot()
-    ttv_thread = th.Thread(target=run_bot, args=(bot,))
-    ttv_thread.start()
-
+    global yt_thread, ttv_thread, gpt_thread, bot, flask_thread, processing_thread
     gpt_thread = th.Thread(target=asyncio.run, args=(run_gpt(),))
     gpt_thread.start()
 
@@ -326,7 +317,17 @@ def connect():
     
     flask_thread = th.Thread(target=run_flask)
     flask_thread.start()
-    
+
+    yt_thread = th.Thread(target=asyncio.run, args=(run_youtube(),))
+    yt_thread.start()
+
+    connect_twitch()
+
+def connect_twitch():
+    global ttv_thread, bot
+    bot = Bot()
+    ttv_thread = th.Thread(target=run_bot, args=(bot,))
+    ttv_thread.start()
 
 
 # if __name__ == "__main__":

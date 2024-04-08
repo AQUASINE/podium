@@ -175,6 +175,11 @@ def action_set_metadata(result, key, value):
 def action_remove_metadata(result, key):
     del result.metadata[key]
 
+def action_remove_emotes(result, emotes):
+    # remove any instances of emotes from the message
+    for emote in emotes:
+        result.message = result.message.replace(emote, '')
+
 
 async def gpt_score(result, gpt_client, complete_func, default=0.0):
     result.ready_next = False
