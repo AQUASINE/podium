@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden max-h-screen flex flex-col">
+  <div class="container__app">
     <div class="bg-primary-alt flex width-100 pt-3 pb-3 container__top-bar">
       <div class="flex justify-center items-center pl-3">
         <img src="/podium.svg" alt="Podium Logo" class="logo"/>
@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="absolute flex justify-center items-center w-full top-0 pt-2">
-        <div>
+        <div class="heading__active-config">
           Active Configuration
         </div>
         <div class="ml-3 container__configuration-select">
@@ -16,21 +16,9 @@
         </div>
       </div>
     </div>
-    <div class="flex">
+    <div class="flex flex-1">
       <div class="flex-1">
-        <div class="container__left-sidebar">
-          <div class="container__daemon-info">
-            <div class="indic__daemon"></div>
-            <div>
-              <div>
-                Connected to daemon at
-              </div>
-              <div>
-                <code>localhost:8765</code>
-              </div>
-              </div>
-          </div>
-        </div>
+        <LeftSidebar/>
       </div>
         <MessagesView :messages="messages"/>
     </div>
@@ -42,11 +30,12 @@
 
 import MessagesView from "./MessagesView.vue";
 import VueSelect from 'vue-select';
+import LeftSidebar from "./LeftSidebar.vue";
 
 
 export default {
   name: 'App',
-  components: {MessagesView, VueSelect},
+  components: {LeftSidebar, MessagesView, VueSelect},
   mounted() {
     window.addEventListener('resize', this.handleResize);
     this.getMessages();
@@ -131,26 +120,10 @@ select:hover {
 .item__configuration-select {
 }
 
-.container__left-sidebar {
-  background-color: var(--bg1);
-  height: 100vh;
-  width: 200px;
-  gap: 1rem;
-}
-
 .container__top-bar {
   position: relative;
   width: 100%;
   z-index: 1000;
-}
-
-.container__daemon-info {
-  font-size: 0.8em;
-  padding: 0.75rem;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
 }
 
 .container__daemon-info code {
@@ -158,14 +131,14 @@ select:hover {
   margin-left: 0;
 }
 
-.indic__daemon {
-  background-color: var(--primary);
-  border-radius: 50%;
-  display: inline-block;
-  height: 10px;
-  margin-right: 5px;
-  width: 10px;
-  min-width: 10px;
-  min-height: 10px;
+.heading__active-config {
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+.container__app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 </style>
