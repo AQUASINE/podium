@@ -1,7 +1,6 @@
 <template>
   <div class="flex-1 container__messages-view">
-    <div class="flex">
-
+    <div class="flex container__messages-header">
       <div class="container__message-item text-left p-3 flex">
         <div>
           Messages
@@ -95,7 +94,7 @@ export default {
 }
 
 .item__score {
-  background-color: var(--bg2);
+  background-color: var(--bg3);
 }
 
 select {
@@ -124,10 +123,14 @@ select:hover {
 .container__messages {
   max-height: calc(100vh - 100px);
   height: 100vh;
-  background-color: var(--bg2);
+  background-color: var(--bg3);
 }
 
 .container__messages-view {
-  border-left: 1px solid var(--bg4);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container__messages-header {
+  background-color: var(--bg1);
 }
 </style>

@@ -46,8 +46,10 @@ const indexHtml = join(process.env.DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
-    title: 'Main window',
+    title: 'Podium',
     icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    minWidth: 800,
+    minHeight: 500,
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production

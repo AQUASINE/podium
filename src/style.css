@@ -11,7 +11,7 @@
 
   color-scheme: light dark;
   color: var(--text);
-  background-color: #242424;
+  background-color: var(--bg2);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -51,6 +51,11 @@ a {
   text-decoration: inherit;
 }
 a:hover {
+}
+
+::selection {
+  background-color: var(--primary);
+  color: var(--text);
 }
 
 body {

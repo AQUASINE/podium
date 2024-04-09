@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden max-h-screen flex flex-col">
-    <div class="bg-primary-alt flex width-100 pt-3 pb-3">
+    <div class="bg-primary-alt flex width-100 pt-3 pb-3 container__top-bar">
       <div class="flex justify-center items-center pl-3">
         <img src="/podium.svg" alt="Podium Logo" class="logo"/>
         <div class="font-bold pl-2">
@@ -18,7 +18,19 @@
     </div>
     <div class="flex">
       <div class="flex-1">
-        Left
+        <div class="container__left-sidebar">
+          <div class="container__daemon-info">
+            <div class="indic__daemon"></div>
+            <div>
+              <div>
+                Connected to daemon at
+              </div>
+              <div>
+                <code>localhost:8765</code>
+              </div>
+              </div>
+          </div>
+        </div>
       </div>
         <MessagesView :messages="messages"/>
     </div>
@@ -117,5 +129,43 @@ select:hover {
 }
 
 .item__configuration-select {
+}
+
+.container__left-sidebar {
+  background-color: var(--bg1);
+  height: 100vh;
+  width: 200px;
+  gap: 1rem;
+}
+
+.container__top-bar {
+  position: relative;
+  width: 100%;
+  z-index: 1000;
+}
+
+.container__daemon-info {
+  font-size: 0.8em;
+  padding: 0.75rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.container__daemon-info code {
+  background-color: var(--bg3);
+  margin-left: 0;
+}
+
+.indic__daemon {
+  background-color: var(--primary);
+  border-radius: 50%;
+  display: inline-block;
+  height: 10px;
+  margin-right: 5px;
+  width: 10px;
+  min-width: 10px;
+  min-height: 10px;
 }
 </style>
