@@ -1,13 +1,13 @@
 <template>
-  <div class="flex-1 container__messages-view">
+  <div class="container__messages-view">
     <div class="flex container__messages-header">
-      <div class="container__message-item text-left p-3 flex">
+      <div class="container__message-item text-left flex">
         <div>
           Messages
         </div>
         <v-icon icon="mdi-arrow-down-bold" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
       </div>
-      <div class="p-3">
+      <div>
         Score
       </div>
     </div>
@@ -97,40 +97,24 @@ export default {
   background-color: var(--bg3);
 }
 
-select {
-  border-radius: 8px;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  width: 400px;
-  max-width: 33vw;
-  height: 35px;
-  background-color: var(--primary-dark);
-  color: #ffffff;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-select:hover {
-  border-color: var(--primary)
-}
-
 .container__message-item {
   width: 80%;
 }
 
 .container__messages {
-  max-height: calc(100vh - 100px);
-  height: 100vh;
+  flex: 1;
   background-color: var(--bg3);
 }
 
 .container__messages-view {
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  border-left: 1px solid var(--bg4);
+  width: 250px;
+  flex: 1;
 }
 
 .container__messages-header {
   background-color: var(--bg1);
+  font-size: 0.85em;
+  padding: 0.6rem 0.75rem;
 }
 </style>

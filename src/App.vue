@@ -20,7 +20,11 @@
       <div class="flex-1">
         <LeftSidebar/>
       </div>
+      <CenterPanel/>
+      <div class="container__right-sidebar">
         <MessagesView :messages="messages"/>
+        <MessagesView :messages="messages"/>
+      </div>
     </div>
   </div>
 </template>
@@ -31,11 +35,12 @@
 import MessagesView from "./MessagesView.vue";
 import VueSelect from 'vue-select';
 import LeftSidebar from "./LeftSidebar.vue";
+import CenterPanel from "./CenterPanel.vue";
 
 
 export default {
   name: 'App',
-  components: {LeftSidebar, MessagesView, VueSelect},
+  components: {CenterPanel, LeftSidebar, MessagesView, VueSelect},
   mounted() {
     window.addEventListener('resize', this.handleResize);
     this.getMessages();
@@ -118,6 +123,7 @@ select:hover {
 }
 
 .item__configuration-select {
+  font-size: 0.9rem;
 }
 
 .container__top-bar {
@@ -141,4 +147,20 @@ select:hover {
   flex-direction: column;
   height: 100vh;
 }
+
+.container__right-sidebar {
+  width: 250px;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.header__row-name h1 {
+  font-size: 1.5em;
+  margin: 0;
+  font-weight: 700;
+}
+
 </style>

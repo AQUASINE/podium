@@ -22,7 +22,10 @@
       </div>
       <div class="container__configuration-items">
         <div class="item__configuration" v-for="i in 5" :class="{selected: i === 2}">
+          <div>
           Configuration {{ i }}
+          </div>
+          <v-icon icon="mdi-check-circle" v-if="i === 2" class="icon__running"/>
         </div>
         <div class="item__add-config">
           <v-icon icon="mdi-plus"/>
@@ -124,11 +127,12 @@ export default {
   background-color: var(--bg2);
   border-radius: 4px;
   cursor: pointer;
-  padding: 0.5rem;
   margin-bottom: 0.3rem;
   font-size: 0.8em;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.8rem 0.5rem 0.5rem;
   gap: 0.25rem;
 }
 
@@ -202,5 +206,9 @@ export default {
   align-items: center;
   gap: 0.25rem;
   transition: background-color 0.1s;
+}
+
+.icon__running {
+  color: var(--primary-light);
 }
 </style>
