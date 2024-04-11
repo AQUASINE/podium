@@ -48,7 +48,7 @@ async function createWindow() {
   win = new BrowserWindow({
     title: 'Podium',
     icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
-    minWidth: 800,
+    minWidth: 900,
     minHeight: 500,
     webPreferences: {
       preload,

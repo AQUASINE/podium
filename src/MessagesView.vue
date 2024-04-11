@@ -24,10 +24,7 @@
               <div class="bg4 p-3 rounded-lg">Hidden</div>
             </div>
             <div class="inline-flex flex-wrap">
-            <span v-for="tag in message.tags"
-                  class="bg4 p pr-3 pl-3 mt-2 w-min rounded-full whitespace-nowrap mr-1 text-mute text-xs">
-              {{ tag }}
-            </span>
+              <InlineTag v-for="tag in message.tags">{{ tag }}</InlineTag>
             </div>
           </div>
           <div class="flex-1 p-3 item__score">
@@ -39,8 +36,11 @@
   </div>
 </template>
 <script>
+import InlineTag from "./InlineTag.vue";
+
 export default {
   name: 'MessagesView',
+  components: {InlineTag},
   props: {
     messages: {
       type: Array,
