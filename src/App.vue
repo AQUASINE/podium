@@ -12,7 +12,7 @@
           Active Configuration
         </div>
         <div class="ml-3 container__configuration-select">
-        <VueSelect :options="['Default','Yummers']" class="item__configuration-select"></VueSelect>
+        <VueSelect :options="['translation-chatbox-app','default']" class="item__configuration-select"></VueSelect>
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@ export default {
 .item__configuration-select .vs__search::placeholder,
 .item__configuration-select .vs__dropdown-toggle,
 .item__configuration-select .vs__dropdown-menu {
-  background: var(--primary-dark);
+  background: var(--primary-xtra-dark);
   border: none;
   text-transform: lowercase;
   font-variant: small-caps;
@@ -106,7 +106,7 @@ select {
   width: 400px;
   max-width: 33vw;
   height: 35px;
-  background-color: var(--primary-dark);
+  background-color: var(--primary-xtra-dark);
   color: #ffffff;
   border: 1px solid transparent;
   cursor: pointer;
@@ -114,7 +114,7 @@ select {
 }
 
 select:hover {
-  border-color: var(--primary)
+  border-color: var(--primary-dark)
 }
 
 .container__configuration-select {

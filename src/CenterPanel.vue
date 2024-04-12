@@ -8,6 +8,9 @@
       <v-icon icon="mdi-check"></v-icon>
       ACTIVE
     </div>
+    <div class="info__date">
+      Last updated April 11th, 2024
+    </div>
     <div class="item__description">
       This is a translation chatbox app that uses the Google Translate API to translate messages in real-time.
     </div>
@@ -33,25 +36,6 @@ export default {
 }
 </script>
 <style>
-
-select {
-  border-radius: 8px;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  width: 400px;
-  max-width: 33vw;
-  height: 35px;
-  background-color: var(--primary-dark);
-  color: #ffffff;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-select:hover {
-  border-color: var(--primary)
-}
 
 .container__daemon-info code {
   background-color: var(--bg3);
@@ -135,4 +119,8 @@ select:hover {
   gap: 0.5rem;
 }
 
+.info__date {
+  font-size: 0.75em;
+  color: var(--text-mute);
+}
 </style>

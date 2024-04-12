@@ -1,9 +1,10 @@
 <template>
   <div class="container__data-card">
     <div class="container__data-card-header">
-      <div>
-        <v-icon icon="mdi-twitch"></v-icon>
-        AQUASINE
+      <div class="info__connected-name">
+        <v-icon :icon="typeIcon"></v-icon>
+        {{ name }}
+        <v-icon icon="mdi-pencil" class="icon__pencil"></v-icon>
       </div>
       <div class="info__connected-indic">
         <v-icon icon="mdi-check"></v-icon>
@@ -14,22 +15,47 @@
       <div class="info__starting-score">
         Starting Score
       </div>
-      <input type="number" class="input__starting-score">
+      <input type="number" class="input__starting-score" v-model="startingScore"/>
     </div>
     <div class="container__identify-tags">
       Generated Tags:
-      <InlineTag>ttv</InlineTag>
-      <InlineTag>ttv:aquasine</InlineTag>
+      <InlineTag v-for="tag in generatedTags">{{ tag }}</InlineTag>
     </div>
   </div>
 </template>
-<script>
-import InlineTag from "./InlineTag.vue"
+<script setup>
+import InlineTag from "./InlineTag.vue";
+import {computed, ref} from "vue";
 
-export default {
-  name: 'DataSourceCard',
-  components: {InlineTag}
-}
+const props = defineProps({
+  source: {
+    type: Object,
+    required: true
+  }
+})
+
+const startingScore = ref(props.source.startingScore);
+const type = ref(props.source.type);
+const name = ref(props.source.name);
+
+const typeIcon = computed(() => {
+  if (type.value === 'ttv') {
+    return 'mdi-twitch';
+  } else if (type.value === 'youtube') {
+    return 'mdi-youtube';
+  }
+  return 'mdi-help';
+})
+
+const generatedTags = computed(() => {
+  if (type.value === 'ttv') {
+    return ['ttv', `ttv:${name.value.toLowerCase()}`];
+  } else if (type.value === 'youtube') {
+    return ['yt', `yt:${name.value.toLowerCase()}`];
+  }
+})
+
+
 </script>
 <style>
 
@@ -63,6 +89,9 @@ export default {
 }
 
 .info__connected-indic {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   color: var(--text-mute);
   font-size: 0.85em;
   font-weight: 500;
@@ -73,7 +102,7 @@ export default {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  width: 60px;
+  width: 50px;
   max-width: 33vw;
   height: 30px;
   background-color: var(--bg2);
@@ -99,5 +128,13 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 0.85em;
   color: var(--text-mute);
   margin-top: 0.75rem;
+}
+
+.info__connected-name {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1em;
+  font-weight: 500;
 }
 </style>
