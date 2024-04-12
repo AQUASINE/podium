@@ -14,6 +14,7 @@ from websocket import create_connection
 from youtube import YouTube
 from pprint import pprint
 from nltk.corpus import brown
+from flask_cors import CORS, cross_origin
 
 nltk.download([
     "stopwords",
@@ -54,7 +55,7 @@ DEFAULT_RULES = [
         action=[analyze_sentiment, [multiply_score, add_user_score]]
     )
 ]
-DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['kitboga'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie','UCMnULQ5F6kLDAHxofDWIbrw': 'PirateSoftware'}, DEFAULT_RULES)
+DEFAULT_CONFIGURATION = PodiumConfiguration('Default', ['atrioc', 'coney'], {'UCujyjxsq5FZNVnQro51zKSQ': 'fuslie','UCMnULQ5F6kLDAHxofDWIbrw': 'PirateSoftware'}, DEFAULT_RULES)
 # DEFAULT_CONFIGURATION = PodiumConfiguration('Default', [], {}, DEFAULT_RULES)
 
 configurations = [DEFAULT_CONFIGURATION]
@@ -266,6 +267,7 @@ def run_bot(bot):
     bot.run()
 
 app = Flask(__name__)
+CORS(app)
 
 def run_flask():
     app.run(host='0.0.0.0', port=5000)

@@ -23,7 +23,7 @@
       <CenterPanel/>
       <div class="container__right-sidebar">
         <MessagesView :messages="messages"/>
-        <MessagesView :messages="messages"/>
+        <UsersView :users="users"/>
       </div>
     </div>
   </div>
@@ -36,18 +36,19 @@ import MessagesView from "./MessagesView.vue";
 import VueSelect from 'vue-select';
 import LeftSidebar from "./LeftSidebar.vue";
 import CenterPanel from "./CenterPanel.vue";
-
+import UsersView from "./UsersView.vue";
 
 export default {
   name: 'App',
-  components: {CenterPanel, LeftSidebar, MessagesView, VueSelect},
+  components: {UsersView, CenterPanel, LeftSidebar, MessagesView, VueSelect},
   mounted() {
     window.addEventListener('resize', this.handleResize);
     this.getMessages();
   },
   data() {
     return {
-      messages: []
+      messages: [],
+      users: [],
     }
   },
   methods: {
@@ -69,6 +70,16 @@ export default {
           });
         }
 
+        // fetch list of users from localhost:5000
+        fetch('http://localhost:5000/get_users')
+          .then(response => response.json())
+          .then(data => {
+            console.log('Users list: ', data)
+            // sort users by user_score. data is an object of key-value pairs, convert to array
+            const users = Object.values(data);
+            this.users = users.sort((a, b) => b.user_score - a.user_score);
+            console.log('Sorted users: ', this.users)
+          });
       }, 3000);
     },
     pushMessage(message) {
@@ -150,10 +161,9 @@ select:hover {
 
 .container__right-sidebar {
   width: 250px;
-  height: 100%;
-  max-height: 100%;
+  height: calc(100vh - 3rem);
+  max-height: calc(100vh - 3rem);
   display: flex;
-  flex: 1;
   flex-direction: column;
 }
 

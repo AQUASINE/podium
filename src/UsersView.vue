@@ -3,7 +3,7 @@
     <div class="flex container__messages-header">
       <div class="container__message-item text-left flex">
         <div>
-          Messages
+          Users
         </div>
         <v-icon icon="mdi-arrow-down-bold" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
       </div>
@@ -12,23 +12,23 @@
       </div>
     </div>
     <div class="overflow-y-scroll container__messages">
-      <div v-for="message in messages" class="bg3 item__message flex">
+      <div v-for="user in users" class="bg3 item__message flex">
         <div class="flex w-full">
           <div class="p-3 container__message-item flex flex-col">
             <div v-if="!hidden">
           <span class="font-bold">
-          {{ message.user }}
-          </span>: {{ message.message }}
+          {{ user.user }}
+          </span>
             </div>
             <div v-else>
               <div class="bg4 p-3 rounded-lg">Hidden</div>
             </div>
             <div class="inline-flex flex-wrap">
-              <InlineTag v-for="tag in message.tags">{{ tag }}</InlineTag>
+              <InlineTag v-if="user.tags" v-for="tag in user.tags">{{ tag }}</InlineTag>
             </div>
           </div>
           <div class="flex-1 p-3 item__score">
-            {{ formatScore(message.weight) }}
+            {{ formatScore(user.user_score) }}
           </div>
         </div>
       </div>
@@ -39,10 +39,10 @@
 import InlineTag from "./InlineTag.vue";
 
 export default {
-  name: 'MessagesView',
+  name: 'UsersView',
   components: {InlineTag},
   props: {
-    messages: {
+    users: {
       type: Array,
       default: () => []
     }
