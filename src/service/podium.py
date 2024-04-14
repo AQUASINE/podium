@@ -2,6 +2,11 @@ import random
 import asyncio
 import re
 import nltk
+nltk.download([
+    "stopwords",
+    "vader_lexicon",
+    'brown'
+])
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 class PodiumConfiguration():

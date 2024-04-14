@@ -16,26 +16,55 @@
     </div>
     <div class="container__tab-panel">
       <div class="container__tab-row">
-        <div class="item__tab">
+        <div class="item__tab" @click="handleTabClick('wrench')">
           <v-icon icon="mdi-wrench"></v-icon>
         </div>
-        <div class="item__tab">
+        <div class="item__tab" @click="handleTabClick('tune')">
           <v-icon icon="mdi-tune"></v-icon>
         </div>
       </div>
-      <ConfigurationTab/>
+      <ConfigurationTab v-if="tab === 'wrench'"/>
+      <div v-else class="container__tab-panel">
+          <div class="card__title">Rule Settings</div>
+          <div class="card__regex">
+            <div class="header__row-name">
+              <h1>Regex</h1>
+              <v-icon icon="mdi-pencil"></v-icon>
+            </div>
+            <div class="item__description">
+              Match messages with a specific regex pattern.
+            </div>
+            <code>^!translate (.*)$</code>
+          </div>
+        </div>
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import ConfigurationTab from "./ConfigurationTab.vue";
+import 'highlightjs/styles/github.css';
 
-export default {
-  name: 'CenterPanel',
-  components: {ConfigurationTab}
+import { ref } from 'vue';
+
+const tab = ref('wrench');
+
+const handleTabClick = (tabName) => {
+  tab.value = tabName;
 }
+
 </script>
 <style>
+
+
+.card__title {
+  font-size: 1em;
+  font-weight: 700;
+  margin-top: 1rem;
+  background-color: var(--bg3);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  width: 100%;
+}
 
 .container__daemon-info code {
   background-color: var(--bg3);
