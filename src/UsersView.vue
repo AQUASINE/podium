@@ -25,7 +25,7 @@
               <div class="bg4 p-3 rounded-lg">Hidden</div>
             </div>
             <div class="inline-flex flex-wrap">
-              <InlineTag v-if="user.tags" v-for="tag in user.tags">{{ tag }}</InlineTag>
+              <InlineTag v-if="user.tags" v-for="tag in user.tags" :text="tag"></InlineTag>
             </div>
           </div>
           <div class="flex-1 p-3 item__score">

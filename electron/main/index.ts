@@ -44,6 +44,19 @@ const preload = join(__dirname, '../preload/index.mjs')
 const url = process.env.VITE_DEV_SERVER_URL
 const indexHtml = join(process.env.DIST, 'index.html')
 
+// start up python daemon
+import { spawn } from 'child_process'
+const python = spawn('python', ['src/service/daemon.py'])
+python.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`)
+})
+python.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`)
+})
+python.on('close', (code) => {
+  console.log(`child process exited with code ${code}`)
+})
+
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Podium',

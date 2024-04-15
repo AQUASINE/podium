@@ -19,7 +19,7 @@
     </div>
     <div class="container__identify-tags">
       Generated Tags:
-      <InlineTag v-for="tag in generatedTags">{{ tag }}</InlineTag>
+      <InlineTag v-for="tag in generatedTags" :text="tag"></InlineTag>
     </div>
   </div>
 </template>
