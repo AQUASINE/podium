@@ -45,6 +45,7 @@
     "vue-draggable-resizable": "^3.0.0",
     "vue-resizable": "^2.1.7",
     "vue-select": "^4.0.0-beta.6",
-    "vuetify": "^3.5.5"
+    "vuetify": "^3.5.5",
+    "vuex": "^4.1.0"
   }
 }

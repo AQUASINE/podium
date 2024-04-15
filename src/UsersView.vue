@@ -33,6 +33,9 @@
         </div>
       </div>
     </div>
+    <div v-if="users.length === 0" class="container__no-users">
+      No users yet
+    </div>
   </div>
 </template>
 <script>
@@ -117,5 +120,13 @@ export default {
   background-color: var(--bg1);
   font-size: 0.85em;
   padding: 0.6rem 0.75rem;
+}
+
+.container__no-users {
+  color: var(--text-mute);
+  margin-top: 1rem;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.85em;
 }
 </style>

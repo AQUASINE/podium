@@ -14,7 +14,7 @@
   </div>
 </template>
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 const props = defineProps({
   rule: {
@@ -32,6 +32,14 @@ const action = ref(rule.value.action ?? {
 });
 
 const condition = ref(rule.value.condition);
+
+const ruleText = computed(() => {
+  if (condition.value) {
+    return `IF ${condition.value} THEN ${action.value.name}`;
+  } else {
+    return `DO ${action.value.name}`;
+  }
+})
 
 const toggleExpanded = () => {
   expanded.value = !expanded.value;

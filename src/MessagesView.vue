@@ -33,6 +33,9 @@
         </div>
       </div>
     </div>
+    <div v-if="messages.length === 0" class="container__no-messages">
+      No messages yet
+    </div>
   </div>
 </template>
 <script>
@@ -117,5 +120,12 @@ export default {
   background-color: var(--bg1);
   font-size: 0.85em;
   padding: 0.6rem 0.75rem;
+}
+
+.container__no-messages {
+padding: 1rem;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 0.85em;
 }
 </style>
