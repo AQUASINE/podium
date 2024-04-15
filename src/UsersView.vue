@@ -6,6 +6,7 @@
           Users
         </div>
         <v-icon icon="mdi-arrow-down-bold" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
+        <v-icon :icon="hidden ? 'mdi-eye' : 'mdi-eye-off'" class="ml-3" @click="toggleHidden"/>
       </div>
       <div>
         Score

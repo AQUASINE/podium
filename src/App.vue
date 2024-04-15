@@ -37,59 +37,19 @@ import VueSelect from 'vue-select';
 import LeftSidebar from "./LeftSidebar.vue";
 import CenterPanel from "./CenterPanel.vue";
 import UsersView from "./UsersView.vue";
+import {mapState} from "vuex";
 
 export default {
   name: 'App',
   components: {UsersView, CenterPanel, LeftSidebar, MessagesView, VueSelect},
-  mounted() {
+  async mounted() {
     window.addEventListener('resize', this.handleResize);
-    this.getMessages();
+    await this.$store.dispatch('getMessages');
   },
-  data() {
-    return {
-      messages: [],
-      users: [],
-    }
+  computed: {
+    ...mapState(['messages', 'users'])
   },
   methods: {
-    async getMessages() {
-      this.socket = new WebSocket('ws://localhost:8765');
-      this.socket.addEventListener('message', event => {
-        console.log('Message from server ', event.data);
-        this.pushMessage(event.data);
-      });
-
-      setInterval(() => {
-        // check if socket is in the closed state
-        if (this.socket.readyState === 3) {
-          console.log('Socket is closed');
-          this.socket = new WebSocket('ws://localhost:8765');
-          this.socket.addEventListener('message', event => {
-            console.log('Message from server ', event.data);
-            this.pushMessage(event.data);
-          });
-        }
-
-        // fetch list of users from localhost:5000
-        fetch('http://localhost:5000/get_users')
-          .then(response => response.json())
-          .then(data => {
-            console.log('Users list: ', data)
-            // sort users by user_score. data is an object of key-value pairs, convert to array
-            const users = Object.values(data);
-            this.users = users.sort((a, b) => b.user_score - a.user_score);
-            console.log('Sorted users: ', this.users)
-          });
-      }, 3000);
-    },
-    pushMessage(message) {
-      const decodedMessage = JSON.parse(message);
-      if (this.messages.length > 500) {
-        // remove 100 messages
-        this.messages = this.messages.slice(100);
-      }
-      this.messages.push(decodedMessage);
-    },
     handleResize() {
       this.$forceUpdate();
     }

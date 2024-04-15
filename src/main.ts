@@ -12,6 +12,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'highlight.js/styles/stackoverflow-light.css'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from "@highlightjs/vue-plugin";
+import store from './store/store'
 
 import './demos/ipc'
 
@@ -33,6 +34,7 @@ const vuetify = createVuetify({
 const app = createApp(App)
 app.use(hljsVuePlugin)
 app.use(vuetify)
+app.use(store)
 app.mount('#app')
     .$nextTick(() => {
         postMessage({payload: 'removeLoading'}, '*')
