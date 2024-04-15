@@ -9,9 +9,11 @@ import 'vuetify/dist/vuetify.min.css'
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 import '@mdi/font/css/materialdesignicons.css'
 
+import 'highlight.js/styles/stackoverflow-light.css'
+import 'highlight.js/lib/common'
+import hljsVuePlugin from "@highlightjs/vue-plugin";
+
 import './demos/ipc'
-// If you want to use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
-// import './demos/node'
 
 const vuetify = createVuetify({
     components,
@@ -29,7 +31,7 @@ const vuetify = createVuetify({
 });
 
 const app = createApp(App)
-
+app.use(hljsVuePlugin)
 app.use(vuetify)
 app.mount('#app')
     .$nextTick(() => {

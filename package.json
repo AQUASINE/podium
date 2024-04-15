@@ -41,6 +41,8 @@
     "vue-tsc": "^1.8.27"
   },
   "dependencies": {
+    "@highlightjs/vue-plugin": "^2.1.0",
+    "highlight.js": "^11.9.0",
     "highlightjs": "^9.16.2",
     "vue-draggable-resizable": "^3.0.0",
     "vue-resizable": "^2.1.7",

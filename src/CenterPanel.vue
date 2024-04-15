@@ -1,5 +1,6 @@
 <template>
   <div class="container__middle">
+    <div class="container__middle-column">
     <div class="header__row-name">
       <h1>translation-chatbox-app</h1>
       <v-icon icon="mdi-pencil"></v-icon>
@@ -26,17 +27,9 @@
       <ConfigurationTab v-if="tab === 'wrench'"/>
       <div v-else class="container__tab-panel">
           <div class="card__title">Rule Settings</div>
-          <div class="card__regex">
-            <div class="header__row-name">
-              <h1>Regex</h1>
-              <v-icon icon="mdi-pencil"></v-icon>
-            </div>
-            <div class="item__description">
-              Match messages with a specific regex pattern.
-            </div>
-            <code>^!translate (.*)$</code>
-          </div>
+        <RegexConfigCard/>
         </div>
+    </div>
     </div>
   </div>
 </template>
@@ -44,7 +37,8 @@
 import ConfigurationTab from "./ConfigurationTab.vue";
 import 'highlightjs/styles/github.css';
 
-import { ref } from 'vue';
+import {ref} from 'vue';
+import RegexConfigCard from "./RegexConfigCard.vue";
 
 const tab = ref('wrench');
 
@@ -77,11 +71,21 @@ const handleTabClick = (tabName) => {
   display: flex;
   flex-direction: column;
   justify-content: left;
-  align-items: start;
+  align-items: center;
   padding: 1rem;
   text-align: left;
   overflow: auto;
   max-height: calc(100vh - 3rem);
+}
+
+.container__middle-column {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 1rem;
+  max-width: 800px;
 }
 
 .header__row-name {
