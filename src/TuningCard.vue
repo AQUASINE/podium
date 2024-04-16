@@ -1,20 +1,36 @@
 <template>
   <div class="card__regex-tuning">
-    <h1 class="header__card-title">Regex</h1>
+    <h1 class="header__card-title">{{ title }}</h1>
     <div class="item__rule_id">Rule ID: {{ ruleId }}</div>
     <div>
       <h2>Stats</h2>
-      <div>
-        <div>Matches</div>
-        <div>4 / 50</div>
+      <div>Matches</div>
+      <div v-if="!always">
+        4 / 50
+      </div>
+      <div v-else>
+        Always
       </div>
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: 'TuningCard'
-}
+<script setup>
+import { ref } from 'vue';
+
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  ruleId: {
+    type: String,
+    required: true
+  },
+  always: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 <style>
 
@@ -43,5 +59,12 @@ export default {
 .header__card-title {
   font-size: 1.5em;
   font-weight: 700;
+  margin-bottom: -0.2rem;
+}
+
+.item__rule_id {
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--text-mute);
 }
 </style>

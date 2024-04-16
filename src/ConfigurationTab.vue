@@ -98,14 +98,14 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 0.85em;
 }
 
-.item__consume-mode .v-checkbox {
+.item__consume-mode >>> .v-checkbox {
   font-size: 0.95rem;
   margin-top: -0.5rem;
   margin-bottom: -2rem;
   margin-left: -0.5rem;
 }
 
-.item__consume-mode .v-label {
+.item__consume-mode >>> .v-label {
   font-size: 0.85rem;
   color: var(--text) !important;
   opacity: 1;

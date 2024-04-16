@@ -1,7 +1,7 @@
 <template>
   <div class="tile__rule">
     <div class="row__rule">
-      <div class="tile__rule-header">
+      <div class="tile__rule-header" @click="toggleExpanded">
         <div class="handle__rule-tile">
           <v-icon icon="mdi-drag"></v-icon>
         </div>
@@ -10,7 +10,7 @@
           <span class="strong__rule-tile">DO </span>
           <span>{{ action.name }}</span>
         </div>
-        <v-icon :icon="!expanded ? 'mdi-chevron-right' : 'mdi-chevron-down'" @click="toggleExpanded"></v-icon>
+        <v-icon :icon="!expanded ? 'mdi-chevron-right' : 'mdi-chevron-down'"></v-icon>
       </div>
     </div>
     <div v-if="expanded" class="container__rule-details">

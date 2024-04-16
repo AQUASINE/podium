@@ -102,7 +102,7 @@ const handleTabClick = (tabName) => {
 
 .item__active-indicator {
   color: var(--primary);
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
   font-size: 0.85em;
   font-weight: 800;
   border-radius: 0.25rem;
