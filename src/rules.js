@@ -48,6 +48,26 @@ export const conditionTypes = [
         id: 'userwhitelist',
         name: 'User Whitelist',
         description: "Match messages from users on a whitelist.",
+    },
+    {
+        id: 'everynth',
+        name: 'Every nth Message',
+        description: "Match every nth message.",
+    },
+    {
+        id: 'chance',
+        name: 'Random Chance',
+        description: "Match messages with a certain probability.",
+    },
+    {
+        id: 'seededchance',
+        name: 'Seeded Random Chance',
+        description: "Match messages with a certain probability based on the message's hash. This means a message will always have the same outcome.",
+    },
+    {
+        id: 'timebased',
+        name: 'Time-Based',
+        description: "Wait for a certain amount of time before matching a message.",
     }
 ]
 
@@ -102,5 +122,10 @@ export const actionTypes = [
         id: '7tvremove',
         name: 'Remove 7TV emotes',
         description: "Remove 7TV emotes from the message.",
+    },
+    {
+        id: 'gptrank',
+        name: 'GPT Rank',
+        description: "Use ChatGPT to rank batches of messages based on a prompt.",
     }
 ]
