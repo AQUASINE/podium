@@ -59,17 +59,6 @@ const generatedTags = computed(() => {
 </script>
 <style>
 
-.container__daemon-info code {
-  background-color: var(--bg3);
-  margin-left: 0;
-}
-
-.header__row-name h1 {
-  font-size: 1.5em;
-  margin: 0;
-  font-weight: 700;
-}
-
 .container__data-card {
   font-size: 0.85em;
   padding: 0.75rem;

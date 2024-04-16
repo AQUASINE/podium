@@ -52,26 +52,7 @@ const validateRegex = () => {
 }
 
 </script>
-<style>
-
-
-.container__daemon-info code {
-  background-color: var(--bg3);
-  margin-left: 0;
-}
-
-.header__row-name {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.header__row-name h1 {
-  font-size: 1.5em;
-  margin: 0;
-  font-weight: 700;
-}
+<style scoped>
 
 .item__description {
   font-size: 0.85em;

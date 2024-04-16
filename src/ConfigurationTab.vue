@@ -21,7 +21,7 @@
         <v-checkbox label="Consume Mode"></v-checkbox>
       </div>
       <div class="item__consume-mode">
-        <v-checkbox label="Test"></v-checkbox>
+        <v-checkbox label="Log to file"></v-checkbox>
       </div>
     </div>
     <div class="button__save">
@@ -41,25 +41,9 @@ const dataSources = ref([
 ]);
 
 </script>
-<style>
-
-
+<style scoped>
 .container__configuration-details {
   width: 100%;
-}
-
-.container__section-header {
-  font-size: 0.9em;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.container__section-header:first-child {
-  margin-top: 0.25rem;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -78,12 +62,6 @@ input[type=number]::-webkit-outer-spin-button {
   cursor: pointer;
   font-size: 0.8rem;
   color: var(--text-mute);
-}
-
-.divider__center {
-  margin-top: 0.5rem;
-  border-top: 1px solid var(--bg3);
-  margin-bottom: 0.5rem;
 }
 
 .container__output-card {

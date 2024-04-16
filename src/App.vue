@@ -103,11 +103,6 @@ select:hover {
   z-index: 1000;
 }
 
-.container__daemon-info code {
-  background-color: var(--bg3);
-  margin-left: 0;
-}
-
 .heading__active-config {
   font-size: 0.95em;
   font-weight: 500;
@@ -125,12 +120,6 @@ select:hover {
   max-height: calc(100vh - 3rem);
   display: flex;
   flex-direction: column;
-}
-
-.header__row-name h1 {
-  font-size: 1.5em;
-  margin: 0;
-  font-weight: 700;
 }
 
 </style>

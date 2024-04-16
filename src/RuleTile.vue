@@ -59,16 +59,45 @@ const conditionTypes = [
     description: "Match messages that contain a specific string.",
   },
   {
+    id: 'exactMatch',
+    name: 'Exact Match',
+    description: "Match messages that are exactly the same as a specific string.",
+  },
+  {
+    id: 'fuzzyMatch',
+    name: 'Fuzzy Match',
+    description: "Match messages that are similar to a specific string.",
+  },
+  {
     id: 'regex',
     name: 'Regex',
     description: "Match messages with a specific regex pattern.",
   },
   {
     id: 'length',
-    name: 'Length',
-    description: "Match messages with a specific length.",
+    name: 'Message Length',
+    description: "Match messages based on how long they are.",
   },
-
+  {
+    id: 'score',
+    name: 'Current Message Score',
+    description: "Match messages based on the message's current score.",
+  },
+  {
+    id: 'userscore',
+    name: 'User Score',
+    description: "Match messages based on the user's score.",
+  },
+  {
+    id: 'userblacklist',
+    name: 'User Blacklist',
+    description: "Match messages from users on a blacklist.",
+  },
+  {
+    id: 'userwhitelist',
+    name: 'User Whitelist',
+    description: "Match messages from users on a whitelist.",
+  }
 ]
 
 const actionTypes = [
