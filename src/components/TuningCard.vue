@@ -2,6 +2,9 @@
   <div class="card__regex-tuning">
     <h1 class="header__card-title">{{ title }}</h1>
     <div class="item__rule_id">Rule ID: {{ ruleId }}</div>
+    <div class="item__rule-description">
+      {{ description }}
+    </div>
     <div>
       <h2>Stats</h2>
       <div>Matches</div>
@@ -29,6 +32,10 @@ const props = defineProps({
   always: {
     type: Boolean,
     default: false
+  },
+  description: {
+    type: String,
+    default: 'No description provided.'
   }
 })
 </script>
@@ -63,6 +70,12 @@ const props = defineProps({
 }
 
 .item__rule_id {
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--text-mute);
+}
+
+.item__rule-description {
   font-size: 0.85em;
   font-weight: 500;
   color: var(--text-mute);

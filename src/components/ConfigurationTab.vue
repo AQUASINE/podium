@@ -15,7 +15,7 @@
         <div class="output__port-name">
           Output Port
         </div>
-        <input type="number" class="input__output-port"/>
+        <input type="number" class="input__output-port" v-model="outputPort"/>
       </div>
       <div class="item__consume-mode">
         <v-checkbox label="Consume Mode"></v-checkbox>
@@ -39,6 +39,8 @@ const dataSources = ref([
   { name: 'AQUASINE', type: 'ttv', connected: true, startingScore: 100 },
   { name: 'AQUASINE', type: 'youtube', connected: false, startingScore: 100 },
 ]);
+
+const outputPort = ref(8765);
 
 </script>
 <style scoped>

@@ -38,7 +38,7 @@
 <script setup>
 import {computed, ref} from "vue";
 import RegexConfigCard from "./RegexConfigCard.vue";
-import { conditionTypes, actionTypes } from "./rules.js";
+import { conditionTypes, actionTypes } from "../rules.js";
 
 
 const props = defineProps({

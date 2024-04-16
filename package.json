@@ -50,6 +50,7 @@
     "electron-store": "^8.2.0",
     "highlight.js": "^11.9.0",
     "highlightjs": "^9.16.2",
+    "three": "^0.163.0",
     "vue-codemirror": "^6.1.1",
     "vue-draggable": "^2.0.6",
     "vue-draggable-resizable": "^3.0.0",

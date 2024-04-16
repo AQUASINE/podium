@@ -127,5 +127,10 @@ export const actionTypes = [
         id: 'gptrank',
         name: 'GPT Rank',
         description: "Use ChatGPT to rank batches of messages based on a prompt.",
+    },
+    {
+        id: 'sentimentAnalysis',
+        name: 'Sentiment Analysis',
+        description: "Analyze the sentiment of a message.",
     }
 ]

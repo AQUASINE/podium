@@ -1,5 +1,4 @@
 <template>
-  <div class="container__middle">
     <div class="container__middle-column">
       <div class="header__row-name">
         <h1 class="header__configuration-name">translation-chatbox-app</h1>
@@ -31,7 +30,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script setup>
 import ConfigurationTab from "./ConfigurationTab.vue";
@@ -51,7 +49,7 @@ const handleTabClick = (tabName) => {
 
 
 .card__title {
-  font-size: 1em;
+  font-size: 1.5em;
   font-weight: 700;
   margin-top: 1rem;
   background-color: var(--bg3);
