@@ -63,20 +63,8 @@ const handleTabClick = (tabName) => {
   margin-left: 0;
 }
 
-.container__middle {
-  width: 100%;
-  background-color: var(--bg2);
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  align-items: center;
-  padding: 1rem;
-  text-align: left;
-  overflow: auto;
-  max-height: calc(100vh - 3rem);
-}
-
 .container__middle-column {
+  padding: 1rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -99,11 +87,21 @@ const handleTabClick = (tabName) => {
 }
 
 .item__active-indicator {
-  color: var(--primary);
-  margin-top: 0.5rem;
+  background-color: var(--primary-light);
+  padding: 0.25rem 0.5rem;
+  color: var(--bg1);
+  margin-bottom: 0.5rem;
+  margin-top: 0.75rem;
   font-size: 0.85em;
   font-weight: 800;
   border-radius: 0.25rem;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.item__active-indicator:hover {
+  background-color: var(--primary);
 }
 
 .item__description {

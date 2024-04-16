@@ -74,6 +74,7 @@ const connected = computed(() => store.state.isConnected);
   flex-direction: column;
   justify-content: space-between;
   text-align: left;
+  border-right: 1px solid var(--bg4);
 }
 
 .container__daemon-info {
