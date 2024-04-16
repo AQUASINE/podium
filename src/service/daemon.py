@@ -243,7 +243,6 @@ async def finish_processing_entry(entry):
     obj = json.loads(obj)
     obj['weight'] = score
     obj['metadata'] = metadata
-    print(obj)
 
     processing_messages.remove(entry)
     

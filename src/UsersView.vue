@@ -2,27 +2,27 @@
   <div class="container__messages-view">
     <div class="flex container__messages-header">
       <div class="container__message-item text-left flex">
-        <div>
+        <div class="item__user-title">
           Users
         </div>
         <v-icon icon="mdi-arrow-down-bold" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
         <v-icon :icon="hidden ? 'mdi-eye' : 'mdi-eye-off'" class="ml-3" @click="toggleHidden"/>
       </div>
-      <div>
+      <div class="item__user-title">
         Score
       </div>
     </div>
-    <div class="overflow-y-scroll container__messages">
+    <div class="overflow-y-scroll container__messages" v-if="!hidden">
       <div v-for="user in users" class="bg3 item__message flex">
         <div class="flex w-full">
           <div class="p-3 container__message-item flex flex-col">
             <div v-if="!hidden">
-          <span class="font-bold">
+          <span class="font-bold overflow-auto">
           {{ user.user }}
           </span>
             </div>
             <div v-else>
-              <div class="bg4 p-3 rounded-lg">Hidden</div>
+              <div class="text-mute">Hidden</div>
             </div>
             <div class="inline-flex flex-wrap">
               <InlineTag v-if="user.tags" v-for="tag in user.tags" :text="tag"></InlineTag>
@@ -34,7 +34,10 @@
         </div>
       </div>
     </div>
-    <div v-if="users.length === 0" class="container__no-users">
+    <div v-if="hidden" class="container__no-messages">
+      Users are hidden
+    </div>
+    <div v-else-if="users.length === 0" class="container__no-users">
       No users yet
     </div>
   </div>
@@ -98,7 +101,9 @@ export default {
 }
 
 .item__score {
-  background-color: var(--bg3);
+  background-color: var(--bg2);
+  width: 80px;
+  min-width: 80px;
 }
 
 .container__message-item {
@@ -109,6 +114,7 @@ export default {
   flex: 1;
   background-color: var(--bg3);
   max-height: calc(50vh - 4rem);
+  overflow-x: hidden;
 }
 
 .container__messages-view {
@@ -129,5 +135,9 @@ export default {
   padding: 0.5rem;
   text-align: center;
   font-size: 0.85em;
+}
+
+.item__user-title {
+  font-size: 0.85rem;
 }
 </style>

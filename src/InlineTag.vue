@@ -1,5 +1,5 @@
 <template>
-<span class="bg4 p pr-3 pl-3 mt-2 w-min pt-0.5 pb-0.5 rounded-full whitespace-nowrap mr-1 text-mute text-xs">
+<span class="bg4 p pr-3 pl-3 mt-2 w-min pt-0.5 pb-0.5 rounded-full whitespace-nowrap mr-1 text-mute text-xs" :class="{ compact }">
               {{ formattedText }}
             </span>
 </template>
@@ -10,6 +10,10 @@ export default {
     text: {
       type: String,
       default: ''
+    },
+    compact: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -23,3 +27,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+.compact {
+  padding: 0.1rem 0.35rem !important;
+  font-size: 0.7rem !important;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1;
+}
+</style>

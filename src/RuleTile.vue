@@ -1,20 +1,44 @@
 <template>
   <div class="tile__rule">
-    <div class="tile__rule-header">
-    <div class="handle__rule-tile">
-      <v-icon icon="mdi-drag"></v-icon>
+    <div class="row__rule">
+      <div class="tile__rule-header">
+        <div class="handle__rule-tile">
+          <v-icon icon="mdi-drag"></v-icon>
+        </div>
+        <div class="divider__tile-vert"></div>
+        <div class="container__tile-info">
+          <span class="strong__rule-tile">DO </span>
+          <span>{{ action.name }}</span>
+        </div>
+        <v-icon :icon="!expanded ? 'mdi-chevron-right' : 'mdi-chevron-down'" @click="toggleExpanded"></v-icon>
+      </div>
     </div>
-    <div class="divider__tile-vert"></div>
-    <div class="container__tile-info">
-      <span class="strong__rule-tile">DO </span>
-      <span>{{ action.name }}</span>
-    </div>
-    <v-icon :icon="expanded ? 'mdi-chevron-right' : 'mdi-chevron-down'" @click="toggleExpanded"></v-icon>
+    <div v-if="expanded" class="container__rule-details">
+      <div class="row__rule-details-header">
+        <h2>IF</h2>
+        <v-autocomplete v-model="condition" :items="conditionTypes" item-text="name" item-value="id"
+                        label="Condition Type" outlined></v-autocomplete>
+      </div>
+      <div class="container__rule-action">
+        <RegexConfigCard/>
+      </div>
+      <div class="row__rule-details-header">
+        <h2>THEN</h2>
+        <v-autocomplete v-model="action" :items="actionTypes" item-title="name" item-value="id" label="Action Type"
+                        outlined>
+
+        </v-autocomplete>
+      </div>
+      <div class="container__rule-condition">
+        <RegexConfigCard/>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
 import {computed, ref} from "vue";
+import RegexConfigCard from "./RegexConfigCard.vue";
+
 
 const props = defineProps({
   rule: {
@@ -22,6 +46,84 @@ const props = defineProps({
     required: true
   }
 })
+
+const conditionTypes = [
+  {
+    id: 'none',
+    name: 'Always',
+    description: "Match all messages.",
+  },
+  {
+    id: 'contains',
+    name: 'Contains',
+    description: "Match messages that contain a specific string.",
+  },
+  {
+    id: 'regex',
+    name: 'Regex',
+    description: "Match messages with a specific regex pattern.",
+  },
+  {
+    id: 'length',
+    name: 'Length',
+    description: "Match messages with a specific length.",
+  },
+
+]
+
+const actionTypes = [
+  {
+    id: 'nothing',
+    name: 'Do Nothing',
+    description: "Simply pass the message through without any modifications.",
+  },
+  {
+    id: 'replace',
+    name: 'Simple Replace',
+    description: "Replace a specific string with another string.",
+  },
+  {
+    id: 'regex',
+    name: 'Regex Replace',
+    description: "Replace a string using a regular expression.",
+  },
+  {
+    id: 'drop',
+    name: 'Drop Message',
+    description: "Drop the message and do not pass it through.",
+  },
+  {
+    id: 'set',
+    name: 'Set Score',
+    description: "Set the score of the message to a specific value.",
+  },
+  {
+    id: 'math',
+    name: 'Math',
+    description: "Modify message or user score using math operations.",
+    matchingKeywords: ['add', 'subtract', 'multiply', 'divide', 'modulo', 'power', 'root', 'function']
+  },
+  {
+    id: 'add',
+    name: 'Add to Score',
+    description: "A simple way to add or subtract from the message or user score.",
+  },
+  {
+    id: 'addtag',
+    name: 'Add Tag',
+    description: "Add a tag to the message or user.",
+  },
+  {
+    id: 'removetag',
+    name: 'Remove Tag',
+    description: "Remove a tag from the message or user.",
+  },
+  {
+    id: '7tvremove',
+    name: 'Remove 7TV emotes',
+    description: "Remove 7TV emotes from the message.",
+  }
+]
 
 const expanded = ref(false);
 const rule = ref(props.rule);
@@ -60,10 +162,13 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0.5rem;
   border-radius: 0.25rem;
   margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.row__rule {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.85rem;
 }
 
 .handle__rule-tile {
@@ -96,5 +201,16 @@ input[type=number]::-webkit-outer-spin-button {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+}
+
+.container__rule-details {
+  margin-top: 0.75rem;
+  padding: 0 0.5rem;
+}
+
+.container__rule-details h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
 }
 </style>

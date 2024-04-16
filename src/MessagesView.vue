@@ -13,28 +13,33 @@
       </div>
     </div>
     <div class="overflow-y-scroll container__messages">
-      <div v-for="message in messages" class="bg3 item__message flex">
+      <div v-for="message in messages" class="bg3 item__message flex" v-if="!hidden">
         <div class="flex w-full">
-          <div class="p-3 container__message-item flex flex-col">
+          <div class="p-2 container__message-item flex flex-col">
             <div v-if="!hidden">
           <span class="font-bold">
           {{ message.user }}
           </span>: {{ message.message }}
             </div>
             <div v-else>
-              <div class="bg4 p-3 rounded-lg">Hidden</div>
+              <div class="text-mute rounded-lg">Hidden</div>
             </div>
             <div class="inline-flex flex-wrap">
-              <InlineTag v-for="tag in message.tags" :text="tag"></InlineTag>
+              <InlineTag v-for="tag in message.tags" :text="tag" compact></InlineTag>
             </div>
           </div>
-          <div class="flex-1 p-3 item__score">
+          <div class="item__score">
             {{ formatScore(message.weight) }}
           </div>
         </div>
       </div>
+      <div>
+      </div>
     </div>
-    <div v-if="messages.length === 0" class="container__no-messages">
+    <div v-if="hidden" class="container__no-messages">
+      Messages are hidden
+    </div>
+    <div v-else-if="messages.length === 0" class="container__no-messages">
       No messages yet
     </div>
   </div>
@@ -98,17 +103,24 @@ export default {
 }
 
 .item__score {
-  background-color: var(--bg3);
+  background-color: var(--bg2);
+  width: 80px;
+  min-width: 80px;
+  padding: 0.75rem;
+  flex: 1;
+  font-size: 0.85em;
 }
 
 .container__message-item {
   width: 80%;
+  font-size: 0.85em;
 }
 
 .container__messages {
   flex: 1;
   background-color: var(--bg3);
   max-height: calc(50vh - 4rem);
+  overflow-x: hidden;
 }
 
 .container__messages-view {

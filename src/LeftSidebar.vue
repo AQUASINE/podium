@@ -2,14 +2,17 @@
   <div class="container__left-sidebar">
     <div>
     <div class="container__daemon-info">
-      <div class="indic__daemon"></div>
-      <div>
+      <div class="indic__daemon" :class="{disconnected: !connected}"></div>
+      <div v-if="connected">
         <div>
           Connected to daemon at
         </div>
         <div>
-          <code>localhost:8765</code>
+          <code>{{ connectionString }}</code>
         </div>
+      </div>
+      <div v-else>
+        Not connected to daemon
       </div>
     </div>
     <div class="container__configurations-list">
@@ -37,7 +40,7 @@
     <div>
       <div class="container__authorizations">
         <div class="list__authorizations">
-        <div v-for="i in 2" class="item__authorization">
+        <div class="item__authorization">
           <img class="pfp__auth" src="https://avatars.githubusercontent.com/u/42610534" alt="avatar"/>
           <v-icon icon="mdi-twitch"></v-icon>
           AQUASINE
@@ -51,10 +54,14 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: 'LeftSidebar'
-}
+<script setup>
+import {computed, ref} from "vue";
+import {useStore} from "vuex";
+
+const store = useStore();
+const connectionString = computed(() => store.state.connectionString);
+const connected = computed(() => store.state.isConnected);
+
 </script>
 <style>
 
@@ -92,6 +99,10 @@ export default {
   width: 10px;
   min-width: 10px;
   min-height: 10px;
+}
+
+.disconnected {
+  background-color: var(--primary-dark);
 }
 
 .container__configurations-list {

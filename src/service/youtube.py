@@ -8,7 +8,6 @@ import traceback
 MAX_TIME_TO_WAIT_FOR_LOGIN = 3
 YOUTUBE_FETCH_INTERVAL = 1
 
-# Credit to Ottomated in DougDougGithub/TwitchPlays
 class YouTube:
     session = None
     config = {}
@@ -18,6 +17,7 @@ class YouTube:
     fetch_job = None
     next_fetch_time = 0
 
+    # Credit to Ottomated in DougDougGithub/TwitchPlays
     re_initial_data = re.compile('(?:window\\s*\\[\\s*[\\"\']ytInitialData[\\"\']\\s*\\]|ytInitialData)\\s*=\\s*({.+?})\\s*;')
     re_config = re.compile('(?:ytcfg\\s*.set)\\(({.+?})\\)\\s*;')
 
