@@ -5,15 +5,16 @@
         <div>
           Messages
         </div>
-        <v-icon icon="mdi-arrow-down-bold" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
+        <v-icon icon="mdi-pause" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
         <v-icon :icon="hidden ? 'mdi-eye' : 'mdi-eye-off'" class="ml-3" @click="toggleHidden"/>
+        <v-icon :icon="sortIcon" class="ml-3" @click="cycleSortType"/>
       </div>
       <div>
         Score
       </div>
     </div>
     <div class="overflow-y-scroll container__messages">
-      <div v-for="message in messages" class="bg3 item__message flex" v-if="!hidden">
+      <div v-for="message in sortedMessages" class="bg3 item__message flex" v-if="!hidden">
         <div class="flex w-full">
           <div class="p-2 container__message-item flex flex-col">
             <div v-if="!hidden">
@@ -74,6 +75,7 @@ export default {
     return {
       locked: false,
       hidden: false,
+      sortType: 'time',
     }
   },
   methods: {
@@ -86,6 +88,45 @@ export default {
     formatScore(score) {
       // 3 decimal places
       return score.toFixed(3);
+    },
+    cycleSortType() {
+      switch (this.sortType) {
+        case 'time':
+          this.sortType = 'score';
+          break;
+        case 'score':
+          this.sortType = 'score-desc';
+          break;
+        case 'score-desc':
+          this.sortType = 'time';
+          break;
+        default:
+          this.sortType = 'time';
+      }
+    }
+  },
+  computed: {
+    sortIcon() {
+      switch (this.sortType) {
+        case 'time':
+          return 'mdi-clock';
+        case 'score':
+          return 'mdi-sort-numeric-ascending';
+        case 'score-desc':
+          return 'mdi-sort-numeric-descending';
+      }
+      return 'mdi-help';
+    },
+    sortedMessages() {
+      switch (this.sortType) {
+        case 'time':
+          return this.messages;
+        case 'score':
+          return this.messages.slice().sort((a, b) => a.weight - b.weight);
+        case 'score-desc':
+          return this.messages.slice().sort((a, b) => b.weight - a.weight);
+      }
+      return this.messages;
     }
   }
 }

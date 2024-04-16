@@ -5,7 +5,7 @@
         <div class="item__user-title">
           Users
         </div>
-        <v-icon icon="mdi-arrow-down-bold" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
+        <v-icon :icon="sortIcon" class="ml-3" @click="toggleSortType"/>
         <v-icon :icon="hidden ? 'mdi-eye' : 'mdi-eye-off'" class="ml-3" @click="toggleHidden"/>
       </div>
       <div class="item__user-title">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="overflow-y-scroll container__messages" v-if="!hidden">
-      <div v-for="user in users" class="bg3 item__message flex">
+      <div v-for="user in sortedUsers" class="bg3 item__message flex">
         <div class="flex w-full">
           <div class="p-3 container__message-item flex flex-col">
             <div v-if="!hidden">
@@ -70,20 +70,34 @@ export default {
   },
   data() {
     return {
-      locked: false,
-      hidden: false
+      hidden: false,
+      sortAscending: true
     }
   },
   methods: {
-    toggleLock() {
-      this.locked = !this.locked;
-    },
     toggleHidden() {
       this.hidden = !this.hidden;
     },
     formatScore(score) {
       // 3 decimal places
       return score.toFixed(3);
+    },
+    toggleSortType() {
+      this.sortAscending = !this.sortAscending;
+    }
+  },
+  computed: {
+    sortIcon() {
+      return this.sortAscending ? 'mdi-sort-numeric-ascending' : 'mdi-sort-numeric-descending';
+    },
+    reversedUsers() {
+      return this.users.slice().reverse();
+    },
+    sortedUsers() {
+      if (this.sortAscending) {
+        return this.users;
+      }
+      return this.reversedUsers;
     }
   }
 }
