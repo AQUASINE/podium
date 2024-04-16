@@ -113,7 +113,7 @@ Now, here are the messages:
                     break
                 await asyncio.sleep(time_between_full_checks)
             
-            print("Queue currently has " + str(len(self.queue)) + " entries")
+            print("GPT Rank queue currently has " + str(len(self.queue)) + " entries")
 
             # go through the queue and process any entries that are past the ttl
             now = time.time()

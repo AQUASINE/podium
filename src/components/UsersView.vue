@@ -2,45 +2,43 @@
   <div class="container__messages-view">
     <div class="flex container__messages-header">
       <div class="container__message-item text-left flex">
-        <div>
-          Messages
+        <div class="item__user-title">
+          Users
         </div>
-        <v-icon icon="mdi-arrow-down-bold" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
+        <v-icon :icon="sortIcon" class="ml-3" @click="toggleSortType"/>
         <v-icon :icon="hidden ? 'mdi-eye' : 'mdi-eye-off'" class="ml-3" @click="toggleHidden"/>
       </div>
-      <div>
+      <div class="item__user-title">
         Score
       </div>
     </div>
-    <div class="overflow-y-scroll container__messages">
-      <div v-for="message in messages" class="bg3 item__message flex" v-if="!hidden">
+    <div class="overflow-y-scroll container__messages" v-if="!hidden">
+      <div v-for="user in sortedUsers" class="bg3 item__message flex">
         <div class="flex w-full">
-          <div class="p-2 container__message-item flex flex-col">
+          <div class="p-3 container__message-item flex flex-col">
             <div v-if="!hidden">
-          <span class="font-bold">
-          {{ message.user }}
-          </span>: {{ message.message }}
+          <span class="font-bold overflow-auto">
+          {{ user.user }}
+          </span>
             </div>
             <div v-else>
-              <div class="text-mute rounded-lg">Hidden</div>
+              <div class="text-mute">Hidden</div>
             </div>
             <div class="inline-flex flex-wrap">
-              <InlineTag v-for="tag in message.tags" :text="tag" compact></InlineTag>
+              <InlineTag v-if="user.tags" v-for="tag in user.tags" :text="tag"></InlineTag>
             </div>
           </div>
-          <div class="item__score">
-            {{ formatScore(message.weight) }}
+          <div class="flex-1 p-3 item__score">
+            {{ formatScore(user.user_score) }}
           </div>
         </div>
       </div>
-      <div>
-      </div>
     </div>
     <div v-if="hidden" class="container__no-messages">
-      Messages are hidden
+      Users are hidden
     </div>
-    <div v-else-if="messages.length === 0" class="container__no-messages">
-      No messages yet
+    <div v-else-if="users.length === 0" class="container__no-users">
+      No users yet
     </div>
   </div>
 </template>
@@ -48,10 +46,10 @@
 import InlineTag from "./InlineTag.vue";
 
 export default {
-  name: 'MessagesView',
+  name: 'UsersView',
   components: {InlineTag},
   props: {
-    messages: {
+    users: {
       type: Array,
       default: () => []
     }
@@ -72,20 +70,34 @@ export default {
   },
   data() {
     return {
-      locked: false,
       hidden: false,
+      sortAscending: true
     }
   },
   methods: {
-    toggleLock() {
-      this.locked = !this.locked;
-    },
     toggleHidden() {
       this.hidden = !this.hidden;
     },
     formatScore(score) {
       // 3 decimal places
       return score.toFixed(3);
+    },
+    toggleSortType() {
+      this.sortAscending = !this.sortAscending;
+    }
+  },
+  computed: {
+    sortIcon() {
+      return this.sortAscending ? 'mdi-sort-numeric-ascending' : 'mdi-sort-numeric-descending';
+    },
+    reversedUsers() {
+      return this.users.slice().reverse();
+    },
+    sortedUsers() {
+      if (this.sortAscending) {
+        return this.users;
+      }
+      return this.reversedUsers;
     }
   }
 }
@@ -106,14 +118,10 @@ export default {
   background-color: var(--bg2);
   width: 80px;
   min-width: 80px;
-  padding: 0.75rem;
-  flex: 1;
-  font-size: 0.85em;
 }
 
 .container__message-item {
   width: 80%;
-  font-size: 0.85em;
 }
 
 .container__messages {
@@ -135,10 +143,15 @@ export default {
   padding: 0.6rem 0.75rem;
 }
 
-.container__no-messages {
-padding: 1rem;
-  text-align: center;
+.container__no-users {
   color: var(--text-mute);
+  margin-top: 1rem;
+  padding: 0.5rem;
+  text-align: center;
   font-size: 0.85em;
+}
+
+.item__user-title {
+  font-size: 0.85rem;
 }
 </style>

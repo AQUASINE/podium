@@ -25,18 +25,29 @@ nltk.download([
 BOT_USERNAME = 'AQUASINE'
 YOUTUBE_FETCH_INTERVAL = 1
 
-# read bot token from config.json. if it doesn't exist, tell the user to create it
-with open('config.json', 'r') as f:
-    config = json.load(f)
+# try to read bot token from saved-credentials.json
+try:
+    with open('saved-credentials.json', 'r') as f:
+        credentials = json.load(f)
+        BOT_TOKEN = credentials['TWITCH_OAUTH']
+except FileNotFoundError:
+    print("saved-credentials.json not found. Using config.json")
+    # read bot token from config.json. if it doesn't exist, tell the user to create it
     try:
-        BOT_TOKEN = config['TWITCH_OAUTH']
-    except KeyError:
-        print("config.json is missing the TWITCH_OAUTH key. Please create a bot account and add the OAuth token to config.json")
-        exit(1)
-    try:
-        OPENAI_KEY = config['OPENAI_KEY']
-    except KeyError:
-        print("config.json is missing the OPENAI_KEY key. Please create an OpenAI API key and add it to config.json")
+        with open('config.json', 'r') as f:
+            config = json.load(f)
+            try:
+                BOT_TOKEN = config['TWITCH_OAUTH']
+            except KeyError:
+                print("config.json is missing the TWITCH_OAUTH key. Please create a bot account and add the OAuth token to config.json")
+                exit(1)
+            try:
+                OPENAI_KEY = config['OPENAI_KEY']
+            except KeyError:
+                print("config.json is missing the OPENAI_KEY key. Please create an OpenAI API key and add it to config.json")
+                exit(1)
+    except FileNotFoundError:
+        print("config.json not found. Please create it with the TWITCH_OAUTH key for the bot account and the OPENAI_KEY key.")
         exit(1)
 
 gpt_client = GPTClient(OPENAI_KEY)
@@ -96,6 +107,7 @@ async def fetch_7tv_emotes():
                 to_ignore.append(emote_name)
 
         print("Ignoring the following emotes:", to_ignore)
+
 
 class Bot(twitchio.Client):
     def __init__(self):
@@ -296,6 +308,27 @@ async def reconnect():
     print("reconnect")
     youtube.reconnect(0)
     connect_twitch()
+
+@app.route('/set_configuration', methods=['POST'])
+def set_configuration():
+    global active_configuration
+    data = request.json
+    # TODO: convert data to PodiumConfiguration
+    return 'ok'
+
+@app.route('/get_active_configuration')
+def get_active_configuration():
+    return active_configuration
+
+@app.route('/get_configurations')
+def get_configurations():
+    return configurations
+
+@app.route('/get_emotes')
+def get_emotes():
+    return emote_sets
+
+
 
 processing_thread = None
 gpt_thread = None

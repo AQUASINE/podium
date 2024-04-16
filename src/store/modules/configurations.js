@@ -43,6 +43,11 @@ const configurations = {
             }
         ]
     },
+    getters: {
+        activeConfigurationObject(state) {
+            return state.configurations.find(c => c.id === state.active);
+        }
+    },
     mutations: {
         setActiveConfiguration(state, payload) {
             state.active = payload;
