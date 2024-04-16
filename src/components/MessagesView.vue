@@ -38,6 +38,7 @@
       </div>
     </div>
     <div v-if="hidden" class="container__no-messages">
+      <v-icon icon="mdi-eye-off" class="mr-2"/>
       Messages are hidden
     </div>
     <div v-else-if="messages.length === 0" class="container__no-messages">

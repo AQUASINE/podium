@@ -1,12 +1,12 @@
 <template>
-  <div class="container__messages-view">
+  <div class="container__users-view">
     <div class="flex container__messages-header">
       <div class="container__message-item text-left flex">
         <div class="item__user-title">
           Users
         </div>
         <v-icon :icon="sortIcon" class="ml-3" @click="toggleSortType"/>
-        <v-icon :icon="hidden ? 'mdi-eye' : 'mdi-eye-off'" class="ml-3" @click="toggleHidden"/>
+        <v-icon :icon="hidden ? 'mdi-eye-off' : 'mdi-eye'" class="ml-3" @click="toggleHidden"/>
       </div>
       <div class="item__user-title">
         Score
@@ -35,6 +35,7 @@
       </div>
     </div>
     <div v-if="hidden" class="container__no-messages">
+      <v-icon icon="mdi-eye-off" class="mr-2"/>
       Users are hidden
     </div>
     <div v-else-if="users.length === 0" class="container__no-users">
@@ -131,8 +132,9 @@ export default {
   overflow-x: hidden;
 }
 
-.container__messages-view {
+.container__users-view {
   border-left: 1px solid var(--bg4);
+  border-top: 1px solid var(--bg4);
   width: 250px;
   flex: 1;
 }

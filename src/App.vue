@@ -5,9 +5,7 @@
       <div class="flex-1">
         <LeftSidebar/>
       </div>
-      <div class="container__middle">
-      <PrimaryCenterView/>
-      </div>
+      <CenterPanel/>
       <div class="container__right-sidebar">
         <MessagesView :messages="messages"/>
         <UsersView :users="users"/>
@@ -21,14 +19,14 @@
 
 import MessagesView from "./components/MessagesView.vue";
 import LeftSidebar from "./components/LeftSidebar.vue";
-import CenterPanel from "./components/PrimaryCenterView.vue";
 import UsersView from "./components/UsersView.vue";
 import {mapState} from "vuex";
 import AppTopbar from "./components/AppTopbar.vue";
+import CenterPanel from "./CenterPanel.vue";
 
 export default {
   name: 'App',
-  components: {CenterPanel, AppTopbar, UsersView, PrimaryCenterView, LeftSidebar, MessagesView},
+  components: {CenterPanel, AppTopbar, UsersView, LeftSidebar, MessagesView},
   async mounted() {
     window.addEventListener('resize', this.handleResize);
     await this.$store.dispatch('getMessages');

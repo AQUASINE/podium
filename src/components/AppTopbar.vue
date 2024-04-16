@@ -58,6 +58,7 @@ select:hover {
   position: relative;
   width: 100%;
   z-index: 1000;
+  background-color: var(--primary-dark) !important;
 }
 
 .heading__active-config {
