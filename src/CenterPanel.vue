@@ -2,7 +2,7 @@
   <div class="container__middle">
     <div class="container__middle-column">
     <div class="header__row-name">
-      <h1>translation-chatbox-app</h1>
+      <h1 class="header__configuration-name">translation-chatbox-app</h1>
       <v-icon icon="mdi-pencil"></v-icon>
     </div>
     <div class="item__active-indicator">
@@ -84,7 +84,6 @@ const handleTabClick = (tabName) => {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 1rem;
   max-width: 800px;
 }
 
@@ -156,4 +155,5 @@ const handleTabClick = (tabName) => {
   font-size: 0.75em;
   color: var(--text-mute);
 }
+
 </style>

@@ -35,8 +35,28 @@ const configurations = {
                             value: 1.0
                         }
                     }
-                ]
+                ],
+                output: {
+                    port: 8765,
+                    consumeMode: false,
+                }
             }
         ]
-    }
+    },
+    mutations: {
+        setActiveConfiguration(state, payload) {
+            state.active = payload;
+        },
+        setConfigurations(state, payload) {
+            state.configurations = payload;
+        },
+        upsertConfiguration(state, payload) {
+            const index = state.configurations.findIndex(c => c.id === payload.id);
+            if (index === -1) {
+                state.configurations.push(payload);
+                return;
+            }
+            state.configurations[index] = payload;
+        }
+    },
 }
