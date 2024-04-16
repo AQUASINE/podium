@@ -1,35 +1,35 @@
 <template>
   <div class="container__middle">
     <div class="container__middle-column">
-    <div class="header__row-name">
-      <h1 class="header__configuration-name">translation-chatbox-app</h1>
-      <v-icon icon="mdi-pencil"></v-icon>
-    </div>
-    <div class="item__active-indicator">
-      <v-icon icon="mdi-check"></v-icon>
-      ACTIVE
-    </div>
-    <div class="info__date">
-      Last updated April 11th, 2024
-    </div>
-    <div class="item__description">
-      This is a translation chatbox app that uses the Google Translate API to translate messages in real-time.
-    </div>
-    <div class="container__tab-panel">
-      <div class="container__tab-row">
-        <div class="item__tab" @click="handleTabClick('wrench')">
-          <v-icon icon="mdi-wrench"></v-icon>
+      <div class="header__row-name">
+        <h1 class="header__configuration-name">translation-chatbox-app</h1>
+        <v-icon icon="mdi-pencil"></v-icon>
+      </div>
+      <div class="item__active-indicator">
+        <v-icon icon="mdi-check"></v-icon>
+        ACTIVE
+      </div>
+      <div class="info__date">
+        Last updated April 11th, 2024
+      </div>
+      <div class="item__description">
+        This is a translation chatbox app that uses the Google Translate API to translate messages in real-time.
+      </div>
+      <div class="container__tab-panel">
+        <div class="container__tab-row">
+          <div class="item__tab" @click="handleTabClick('wrench')">
+            <v-icon icon="mdi-wrench"></v-icon>
+          </div>
+          <div class="item__tab" @click="handleTabClick('tune')">
+            <v-icon icon="mdi-tune"></v-icon>
+          </div>
         </div>
-        <div class="item__tab" @click="handleTabClick('tune')">
-          <v-icon icon="mdi-tune"></v-icon>
+        <ConfigurationTab v-if="tab === 'wrench'"/>
+        <div v-else class="container__tab-panel">
+          <div class="card__title">Rule Tuning</div>
+          <TuningCard title="Regex" ruleId="08bdfaedb6"/>
         </div>
       </div>
-      <ConfigurationTab v-if="tab === 'wrench'"/>
-      <div v-else class="container__tab-panel">
-          <div class="card__title">Rule Settings</div>
-        <RegexConfigCard/>
-        </div>
-    </div>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ import ConfigurationTab from "./ConfigurationTab.vue";
 import 'highlightjs/styles/github.css';
 
 import {ref} from 'vue';
-import RegexConfigCard from "./RegexConfigCard.vue";
+import TuningCard from "./TuningCard.vue";
 
 const tab = ref('wrench');
 
