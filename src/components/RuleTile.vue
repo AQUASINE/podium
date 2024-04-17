@@ -1,14 +1,20 @@
 <template>
-  <div class="tile__rule">
+  <div class="tile__rule" draggable="false">
     <div class="row__rule">
       <div class="tile__rule-header" @click="toggleExpanded">
         <div class="handle__rule-tile">
           <v-icon icon="mdi-drag"></v-icon>
         </div>
         <div class="divider__tile-vert"></div>
-        <div class="container__tile-info">
+        <div class="container__tile-info" v-if="conditionInfo">
+          <span class="strong__rule-tile">IF </span>
+          <span>{{ conditionInfo?.name }}</span>
+          <span class="strong__rule-tile">THEN </span>
+          <span>{{ actionInfo?.name }}</span>
+        </div>
+        <div class="container__tile-info" v-else>
           <span class="strong__rule-tile">DO </span>
-          <span>{{ action.name }}</span>
+          <span>{{ actionInfo?.name }}</span>
         </div>
         <v-icon :icon="!expanded ? 'mdi-chevron-right' : 'mdi-chevron-down'"></v-icon>
       </div>
@@ -69,7 +75,7 @@ const action = ref(rule.value.action.name);
 const condition = ref(rule.value.condition);
 
 const actionInfo = computed(() => {
-  return actionTypes.find(a => a.id === action.value.id);
+  return actionTypes.find(a => a.id === action.value);
 })
 
 const conditionInfo = computed(() => {
@@ -135,6 +141,12 @@ input[type=number]::-webkit-outer-spin-button {
 .strong__rule-tile {
   font-weight: 900;
   color: var(--text-mute);
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.strong__rule-tile:first-child {
+  margin-left: 0;
 }
 
 .tile__rule-header {
