@@ -15,8 +15,15 @@ const worstChatter = computed(() => {
   if (users.value.length === 0) {
     return null;
   }
-  return users.value[0]
-  // return users.value[users.value.length - 1];
+  // return users.value[0]
+  return users.value[users.value.length - 1];
+});
+
+const worstChatterScore = computed(() => {
+  if (worstChatter.value) {
+    return worstChatter.value.user_score.toFixed(3);
+  }
+  return 0;
 });
 
 onMounted(() => {
@@ -113,7 +120,7 @@ onMounted(() => {
     <div class="container__message-box-wrapper">
       <div class="container__message-box">
         <div>
-          Our best chatter is:
+          Our worst chatter is:
         </div>
         <div v-if="worstChatter">
 
@@ -121,7 +128,7 @@ onMounted(() => {
             {{ worstChatter.user }}
           </div>
           <div>
-            with a score of {{ worstChatter.user_score }}
+            with a score of {{ worstChatterScore }}
           </div>
         </div>
       </div>
@@ -165,5 +172,10 @@ onMounted(() => {
 
 .container__message-box-wrapper {
   height: 0;
+}
+
+.container__presentation-mode {
+  width: 100%;
+  flex: 1;
 }
 </style>

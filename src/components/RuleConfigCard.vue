@@ -20,13 +20,13 @@
 </template>
 <script setup>
 import {defineProps} from 'vue';
-import DefaultRuleContent from "./DefaultRuleContent.vue";
-import RegexRuleContent from "./RegexRuleContent.vue";
-import AlwaysRuleContent from "./AlwaysRuleContent.vue";
-import ContainsRuleContent from "./ContainsRuleContent.vue";
-import ExactMatchRuleContent from "./ExactMatchRuleContent.vue";
-import FuzzyMatchRuleContent from "./FuzzyMatchRuleContent.vue";
-import MessageLengthRuleContent from "./MessageLengthRuleContent.vue";
+import DefaultRuleContent from "./rule/DefaultRuleContent.vue";
+import RegexRuleContent from "./rule/RegexRuleContent.vue";
+import AlwaysRuleContent from "./rule/AlwaysRuleContent.vue";
+import ContainsRuleContent from "./rule/ContainsRuleContent.vue";
+import ExactMatchRuleContent from "./rule/ExactMatchRuleContent.vue";
+import FuzzyMatchRuleContent from "./rule/FuzzyMatchRuleContent.vue";
+import MessageLengthRuleContent from "./rule/MessageLengthRuleContent.vue";
 
 const props = defineProps({
   title: {

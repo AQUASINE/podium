@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {extendedComparisonOperators} from "../rules";
+import {extendedComparisonOperators} from "../../rules";
 import {computed, ref} from "vue";
+import {useMessageLengthValidator} from "../../utils";
 
 const operator = ref(extendedComparisonOperators[0].id);
-const length = ref(1);
-const distance = ref(3);
-const center = ref(5);
+const length = useMessageLengthValidator(1);
+const distance = useMessageLengthValidator(3);
+const center = useMessageLengthValidator(5);
 
 const operatorText = computed(() => {
   const operatorInfo = extendedComparisonOperators.find(o => o.id === operator.value);
@@ -16,46 +17,13 @@ const isOperationDistance = computed(() => {
   return operator.value === 'dist >' || operator.value === 'dist <';
 })
 
-const validateLength = () => {
-  length.value = Math.floor(length.value);
-  if (length.value < 1) {
-    length.value = 1;
-  }
-  if (length.value > 1000) {
-    length.value = 1000;
-  }
-}
-
-const validateDistance = () => {
-  distance.value = Math.floor(distance.value);
-
-  if (distance.value < 1) {
-    distance.value = 1;
-  }
-
-  if (distance.value > 1000) {
-    distance.value = 1000;
-  }
-}
-
-const validateCenter = () => {
-  center.value = Math.floor(center.value);
-
-  if (center.value < 1) {
-    center.value = 1;
-  }
-
-  if (center.value > 1000) {
-    center.value = 1000;
-  }
-}
 const rangeMin = computed(() => {
-  let min = center.value - distance.value
+  let min = center.value.value - distance.value.value
   return min < 1 ? 1 : min
 });
 
 const rangeMax = computed(() => {
-  let max = center.value + distance.value
+  let max = center.value.value + distance.value.value
   return max > 1000 ? 1000 : max
 })
 
@@ -84,17 +52,17 @@ const rangeMax = computed(() => {
     Match messages <strong class="info__operator">{{ operatorText }}</strong> length:
     <div v-if="isOperationDistance" class="mt-2">
       <div class="ga-1 flex align-center">
-        <input type="number" v-model="distance" @input="validateDistance" min="1" max="1000" class="input__length"/>
+        <input type="number" v-model="distance.value" @input="distance.validate" min="1" max="1000" class="input__length"/>
         <div>
           centered around
         </div>
-        <input type="number" v-model="center" @input="validateDistance" min="1" max="1000" class="input__length"/>
+        <input type="number" v-model="center.value" @input="center.validate" min="1" max="1000" class="input__length"/>
       </div>
       <div class="mt-2">
         <v-icon icon="mdi-information-outline"/> Will range from {{ rangeMin }} to {{ rangeMax }}
       </div>
     </div>
-    <input type="number" v-model="length" @input="validateLength" min="1" max="1000" class="input__length" v-else/>
+    <input type="number" v-model="length.value" @input="length.validate" min="1" max="1000" class="input__length" v-else/>
   </div>
 </template>
 

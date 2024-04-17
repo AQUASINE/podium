@@ -31,7 +31,7 @@ export const conditionTypes = [
     },
     {
         id: 'score',
-        name: 'Current Message Score',
+        name: 'Message Score',
         description: "Match messages based on the message's current score.",
     },
     {

@@ -48,7 +48,7 @@
 </template>
 <script setup>
 import {computed, ref} from "vue";
-import RegexConfigCard from "./RegexRuleContent.vue";
+import RegexConfigCard from "./rule/RegexRuleContent.vue";
 import {conditionTypes, actionTypes} from "../rules.js";
 import RuleConfigCard from "./RuleConfigCard.vue";
 

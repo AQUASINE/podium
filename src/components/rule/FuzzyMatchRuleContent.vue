@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import CompactCheckbox from "./CompactCheckbox.vue";
+import CompactCheckbox from "../CompactCheckbox.vue";
 
 const contains = ref('');
 const caseSensitive = ref(false);
