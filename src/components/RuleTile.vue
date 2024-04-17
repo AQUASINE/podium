@@ -25,8 +25,13 @@
         </v-autocomplete>
       </div>
       <div class="container__rule-action">
-        <RuleConfigCard title="Regex" description="Match messages with a specific regex pattern" type="regex">
+        <RuleConfigCard v-if="actionInfo" title="Regex" description="Match messages with a specific regex pattern"
+                        :type="condition">
         </RuleConfigCard>
+        <div v-else>
+          <RuleConfigCard title="Error" :description="'Could not find rule of type ' + condition" type="'default'">
+          </RuleConfigCard>
+        </div>
 
       </div>
       <div class="row__rule-details-header">
@@ -59,12 +64,17 @@ const props = defineProps({
 const expanded = ref(false);
 const rule = ref(props.rule);
 
-const action = ref(rule.value.action ?? {
-  name: 'nothing',
-  type: 'none'
-});
+const action = ref(rule.value.action.name);
 
 const condition = ref(rule.value.condition);
+
+const actionInfo = computed(() => {
+  return actionTypes.find(a => a.id === action.value.id);
+})
+
+const conditionInfo = computed(() => {
+  return conditionTypes.find(c => c.id === condition.value.id);
+})
 
 const ruleText = computed(() => {
   if (condition.value) {
