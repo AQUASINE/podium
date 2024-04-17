@@ -6,7 +6,7 @@
           Messages
         </div>
         <v-icon icon="mdi-pause" class="ml-3" @click="toggleLock" :class="{'icon-disable': locked}"/>
-        <v-icon :icon="hidden ? 'mdi-eye' : 'mdi-eye-off'" class="ml-3" @click="toggleHidden"/>
+        <v-icon :icon="hidden ? 'mdi-eye-off' : 'mdi-eye'" class="ml-3" @click="toggleHidden"/>
         <v-icon :icon="sortIcon" class="ml-3" @click="cycleSortType"/>
       </div>
       <div>
@@ -142,6 +142,10 @@ export default {
   text-align: left;
   max-width: 100%;
   width: 100%;
+}
+
+.item__message:last-child {
+  border-bottom: none;
 }
 
 .item__score {

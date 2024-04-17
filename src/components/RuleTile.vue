@@ -16,11 +16,18 @@
     <div v-if="expanded" class="container__rule-details">
       <div class="row__rule-details-header">
         <h2>IF</h2>
-        <v-autocomplete v-model="condition" :items="conditionTypes" item-text="name" item-value="id"
-                        label="Condition Type" outlined></v-autocomplete>
+        <v-autocomplete v-model="condition" :items="conditionTypes" item-title="name" item-value="id"
+                        label="Condition Type" outlined>
+          <template v-slot:item="{props, item}">
+            <v-list-item class="item__rule-option" :title="item.title" :subtitle="item.raw.description" v-bind="props">
+            </v-list-item>
+          </template>
+        </v-autocomplete>
       </div>
       <div class="container__rule-action">
-        <RegexConfigCard/>
+        <RuleConfigCard title="Regex" description="Match messages with a specific regex pattern" type="regex">
+        </RuleConfigCard>
+
       </div>
       <div class="row__rule-details-header">
         <h2>THEN</h2>
@@ -30,15 +37,15 @@
         </v-autocomplete>
       </div>
       <div class="container__rule-condition">
-        <RegexConfigCard/>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import {computed, ref} from "vue";
-import RegexConfigCard from "./RegexConfigCard.vue";
-import { conditionTypes, actionTypes } from "../rules.js";
+import RegexConfigCard from "./RegexRuleContent.vue";
+import {conditionTypes, actionTypes} from "../rules.js";
+import RuleConfigCard from "./RuleConfigCard.vue";
 
 
 const props = defineProps({
@@ -47,7 +54,6 @@ const props = defineProps({
     required: true
   }
 })
-
 
 
 const expanded = ref(false);
@@ -137,5 +143,10 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 1.5em;
   margin-bottom: 0.5rem;
   font-weight: 800;
+}
+
+.item__rule-option-title {
+  font-size: 0.95em;
+  font-weight: 700;
 }
 </style>

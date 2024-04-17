@@ -1,12 +1,5 @@
 <template>
   <div class="card__regex">
-    <div class="header__row-name">
-      <h1>Regex</h1>
-      <v-icon icon="mdi-pencil"></v-icon>
-    </div>
-    <div class="item__description">
-      Match messages with a specific regex pattern.
-    </div>
     <div class="container__regex-input">
       <codemirror v-model="regex" class="input__regex" @input="validateRegex"
                   :extensions="extensions" :options="{lineNumbers: false, theme: 'one-dark'}">
