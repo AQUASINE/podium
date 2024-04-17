@@ -150,6 +150,19 @@ code {
   border-radius: 4px;
 }
 
+input[type="number"] {
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  width: 50px;
+  height: 30px;
+  padding: 0.2em 0.75em;
+  background-color: var(--bg2);
+  border: 1px solid transparent;
+  transition: border-color 0.25s;
+}
+
 
 >>> {
 

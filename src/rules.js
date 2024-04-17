@@ -134,3 +134,43 @@ export const actionTypes = [
         description: "Analyze the sentiment of a message.",
     }
 ]
+
+export const comparisonOperators = [
+    {
+        id: '==',
+        name: 'Equal to',
+    },
+    {
+        id: '!=',
+        name: 'Not equal to',
+    },
+    {
+        id: '>',
+        name: 'Greater than',
+    },
+    {
+        id: '>=',
+        name: 'Greater than or equal to',
+    },
+    {
+        id: '<',
+        name: 'Less than',
+    },
+    {
+        id: '<=',
+        name: 'Less than or equal to',
+    },
+]
+
+export const extendedComparisonOperators = [
+    ...comparisonOperators,
+    {
+        id: 'dist >',
+        name: 'With distance greater than',
+    },
+    {
+        id: 'dist <',
+        name: 'With distance less than',
+    },
+]
+

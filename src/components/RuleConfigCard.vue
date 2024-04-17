@@ -13,6 +13,7 @@
       <ContainsRuleContent v-else-if="type === 'contains'"/>
       <ExactMatchRuleContent v-else-if="type === 'exactMatch'"/>
       <FuzzyMatchRuleContent v-else-if="type === 'fuzzyMatch'"/>
+      <MessageLengthRuleContent v-else-if="type === 'length'"/>
       <DefaultRuleContent v-else :type="type"/>
     </div>
   </div>
@@ -24,6 +25,8 @@ import RegexRuleContent from "./RegexRuleContent.vue";
 import AlwaysRuleContent from "./AlwaysRuleContent.vue";
 import ContainsRuleContent from "./ContainsRuleContent.vue";
 import ExactMatchRuleContent from "./ExactMatchRuleContent.vue";
+import FuzzyMatchRuleContent from "./FuzzyMatchRuleContent.vue";
+import MessageLengthRuleContent from "./MessageLengthRuleContent.vue";
 
 const props = defineProps({
   title: {
