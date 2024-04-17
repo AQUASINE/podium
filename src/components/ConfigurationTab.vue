@@ -9,21 +9,7 @@
     <IconSectionHeader icon="mdi-ruler">Rules</IconSectionHeader>
     <RulesCard/>
     <IconSectionHeader icon="mdi-cog">Output</IconSectionHeader>
-    <div class="container__output-card">
-      <div class="item__output-port">
-        <v-icon icon="mdi-connection"></v-icon>
-        <div class="output__port-name">
-          Output Port
-        </div>
-        <input type="number" class="input__output-port" v-model="outputPort"/>
-      </div>
-      <div class="item__consume-mode">
-        <v-checkbox label="Consume Mode"></v-checkbox>
-      </div>
-      <div class="item__consume-mode">
-        <v-checkbox label="Log to file"></v-checkbox>
-      </div>
-    </div>
+    <OutputCard :outputPort="outputPort"/>
     <div class="button__save">
       Save
       </div>
@@ -34,13 +20,13 @@ import DataSourceCard from "./DataSourceCard.vue";
 import {ref} from "vue";
 import RulesCard from "./RulesCard.vue";
 import IconSectionHeader from "./IconSectionHeader.vue";
+import OutputCard from "./OutputCard.vue";
 
 const dataSources = ref([
   { name: 'AQUASINE', type: 'ttv', connected: true, startingScore: 100 },
   { name: 'AQUASINE', type: 'youtube', connected: false, startingScore: 100 },
 ]);
 
-const outputPort = ref(8765);
 
 </script>
 <style scoped>
@@ -66,52 +52,7 @@ input[type=number]::-webkit-outer-spin-button {
   color: var(--text-mute);
 }
 
-.container__output-card {
-  background-color: var(--bg3);
-  padding: 0.75rem;
-  border-radius: 0.25rem;
-}
 
-.item__output-port {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85em;
-  margin-bottom: 0.5rem;
-}
-
-.item__output-port .input__output-port {
-  border-radius: 8px;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  width: 50px;
-  height: 30px;
-  background-color: var(--bg2);
-  text-align: center;
-  border: 1px solid transparent;
-  transition: border-color 0.25s;
-}
-
-.item__consume-mode {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  font-size: 0.85em;
-}
-
-.item__consume-mode >>> .v-checkbox {
-  font-size: 0.95rem;
-  margin-top: -0.5rem;
-  margin-bottom: -2rem;
-  margin-left: -0.5rem;
-}
-
-.item__consume-mode >>> .v-label {
-  font-size: 0.85rem;
-  color: var(--text) !important;
-  opacity: 1;
-}
 
 .button__save {
   display: flex;
