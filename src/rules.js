@@ -1,6 +1,6 @@
 export const conditionTypes = [
     {
-        id: 'none',
+        id: 'always',
         name: 'Always',
         description: "Match all messages.",
     },

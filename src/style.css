@@ -56,6 +56,12 @@ a {
 a:hover {
 }
 
+code {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9em;
+    background-color: var(--bg1);
+}
+
 ::selection {
   background-color: var(--primary);
   color: var(--text);
@@ -139,7 +145,6 @@ button:focus-visible {
 }
 
 code {
-  background-color: #1a1a1a;
   padding: 2px 4px;
   margin: 0 4px;
   border-radius: 4px;

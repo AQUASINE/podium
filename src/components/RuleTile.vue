@@ -25,7 +25,7 @@
         </v-autocomplete>
       </div>
       <div class="container__rule-action">
-        <RuleConfigCard v-if="actionInfo" title="Regex" description="Match messages with a specific regex pattern"
+        <RuleConfigCard v-if="conditionInfo" :title="conditionInfo.name" :description="conditionInfo.description"
                         :type="condition">
         </RuleConfigCard>
         <div v-else>
@@ -73,7 +73,7 @@ const actionInfo = computed(() => {
 })
 
 const conditionInfo = computed(() => {
-  return conditionTypes.find(c => c.id === condition.value.id);
+  return conditionTypes.find(c => c.id === condition.value);
 })
 
 const ruleText = computed(() => {

@@ -8,8 +8,12 @@
       {{ description }}
     </div>
     <div class="container__config-content">
-      <RegexRuleContent v-if="type === 'regex'"/>
-      <DefaultRuleContent v-else/>
+      <AlwaysRuleContent v-if="type === 'always'"/>
+      <RegexRuleContent v-else-if="type === 'regex'"/>
+      <ContainsRuleContent v-else-if="type === 'contains'"/>
+      <ExactMatchRuleContent v-else-if="type === 'exactMatch'"/>
+      <FuzzyMatchRuleContent v-else-if="type === 'fuzzyMatch'"/>
+      <DefaultRuleContent v-else :type="type"/>
     </div>
   </div>
 </template>
@@ -17,6 +21,9 @@
 import {defineProps} from 'vue';
 import DefaultRuleContent from "./DefaultRuleContent.vue";
 import RegexRuleContent from "./RegexRuleContent.vue";
+import AlwaysRuleContent from "./AlwaysRuleContent.vue";
+import ContainsRuleContent from "./ContainsRuleContent.vue";
+import ExactMatchRuleContent from "./ExactMatchRuleContent.vue";
 
 const props = defineProps({
   title: {
