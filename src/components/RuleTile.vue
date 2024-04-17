@@ -16,11 +16,23 @@
     <div v-if="expanded" class="container__rule-details">
       <div class="row__rule-details-header">
         <h2>IF</h2>
-        <v-autocomplete v-model="condition" :items="conditionTypes" item-text="name" item-value="id"
-                        label="Condition Type" outlined></v-autocomplete>
+        <v-autocomplete v-model="condition" :items="conditionTypes" item-title="name" item-value="id"
+                        label="Condition Type" outlined>
+          <template v-slot:item="{props, item}">
+            <v-list-item class="item__rule-option" :title="item.title" :subtitle="item.raw.description" v-bind="props">
+            </v-list-item>
+          </template>
+        </v-autocomplete>
       </div>
       <div class="container__rule-action">
-        <RegexConfigCard/>
+        <RuleConfigCard v-if="conditionInfo" :title="conditionInfo.name" :description="conditionInfo.description"
+                        :type="condition">
+        </RuleConfigCard>
+        <div v-else>
+          <RuleConfigCard title="Error" :description="'Could not find rule of type ' + condition" type="'default'">
+          </RuleConfigCard>
+        </div>
+
       </div>
       <div class="row__rule-details-header">
         <h2>THEN</h2>
@@ -30,15 +42,15 @@
         </v-autocomplete>
       </div>
       <div class="container__rule-condition">
-        <RegexConfigCard/>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import {computed, ref} from "vue";
-import RegexConfigCard from "./RegexConfigCard.vue";
-import { conditionTypes, actionTypes } from "../rules.js";
+import RegexConfigCard from "./RegexRuleContent.vue";
+import {conditionTypes, actionTypes} from "../rules.js";
+import RuleConfigCard from "./RuleConfigCard.vue";
 
 
 const props = defineProps({
@@ -49,16 +61,20 @@ const props = defineProps({
 })
 
 
-
 const expanded = ref(false);
 const rule = ref(props.rule);
 
-const action = ref(rule.value.action ?? {
-  name: 'nothing',
-  type: 'none'
-});
+const action = ref(rule.value.action.name);
 
 const condition = ref(rule.value.condition);
+
+const actionInfo = computed(() => {
+  return actionTypes.find(a => a.id === action.value.id);
+})
+
+const conditionInfo = computed(() => {
+  return conditionTypes.find(c => c.id === condition.value);
+})
 
 const ruleText = computed(() => {
   if (condition.value) {
@@ -137,5 +153,10 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 1.5em;
   margin-bottom: 0.5rem;
   font-weight: 800;
+}
+
+.item__rule-option-title {
+  font-size: 0.95em;
+  font-weight: 700;
 }
 </style>

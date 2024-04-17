@@ -15,7 +15,8 @@ const worstChatter = computed(() => {
   if (users.value.length === 0) {
     return null;
   }
-  return users.value[users.value.length - 1];
+  return users.value[0]
+  // return users.value[users.value.length - 1];
 });
 
 onMounted(() => {
@@ -112,7 +113,7 @@ onMounted(() => {
     <div class="container__message-box-wrapper">
       <div class="container__message-box">
         <div>
-          Our worst chatter is:
+          Our best chatter is:
         </div>
         <div v-if="worstChatter">
 

@@ -27,6 +27,7 @@
         <div v-else class="container__tab-panel">
           <div class="card__title">Rule Tuning</div>
           <TuningCard title="Regex" ruleId="08bdfaedb6"/>
+
         </div>
       </div>
     </div>

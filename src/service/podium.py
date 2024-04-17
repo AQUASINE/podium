@@ -8,6 +8,7 @@ nltk.download([
     'brown'
 ])
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from detoxify import Detoxify
 
 class PodiumConfiguration():
     def __init__(self, id, twitch_channels=[], youtube_channels={}, rules=[]):
@@ -131,6 +132,13 @@ def cond_contains_any(result, matches):
         if match in result:
             return True
     return False
+
+detox = Detoxify('original')
+def cond_toxicity(result, threshold):
+    tox_result = detox.predict(result.message)
+    toxicity = tox_result['toxicity']
+    severe_toxicity = tox_result['severe_toxicity']
+    return toxicity >= threshold or severe_toxicity >= threshold
 
 def cond_regex(result, regex):
     return re.search(regex, result.message) is not None

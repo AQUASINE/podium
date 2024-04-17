@@ -1,5 +1,6 @@
 import {createStore} from "vuex";
 
+const DEBUG_MESSAGES = false;
 const store = createStore({
     modules: {},
     state: {
@@ -38,7 +39,9 @@ const store = createStore({
                     commit('setConnection', {isConnected: false, connectionString: 'localhost:8765'});
                 });
                 socket.addEventListener('message', event => {
-                    console.log('Message from server ', event.data);
+                    if (DEBUG_MESSAGES) {
+                        console.log('Received message from server: ' + event.data);
+                    }
                     dispatch('pushMessage', event.data);
                 });
                 commit('setSocket', socket);
@@ -59,12 +62,16 @@ const store = createStore({
                 fetch('http://localhost:5000/get_users')
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Users list: ', data)
+                        if (DEBUG_MESSAGES) {
+                            console.log('Users list: ', data)
+                        }
                         // sort users by user_score. data is an object of key-value pairs, convert to array
                         let users = Object.values(data);
                         users = users.sort((a, b) => b.user_score - a.user_score);
                         commit('setUsers', users);
-                        console.log('Sorted users: ', state.users)
+                        if (DEBUG_MESSAGES) {
+                            console.log('Sorted users: ', state.users)
+                        }
                     })
             }, 3000);
         },

@@ -1,6 +1,6 @@
 export const conditionTypes = [
     {
-        id: 'none',
+        id: 'always',
         name: 'Always',
         description: "Match all messages.",
     },
@@ -62,7 +62,7 @@ export const conditionTypes = [
     {
         id: 'seededchance',
         name: 'Seeded Random Chance',
-        description: "Match messages with a certain probability based on the message's hash. This means a message will always have the same outcome.",
+        description: "Match messages with a certain probability consistently based on the message's hash."
     },
     {
         id: 'timebased',
