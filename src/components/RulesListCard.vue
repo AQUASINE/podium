@@ -26,9 +26,11 @@
 import RuleTile from "./RuleTile.vue";
 import {VueDraggableNext} from "vue-draggable-next";
 import {ref} from "vue";
+import { v4 as uuidv4 } from "uuid";
 
 const rules = ref([
   {
+    id: uuidv4(),
     condition: {
       type: 'none',
       name: 'nothing'
@@ -38,20 +40,10 @@ const rules = ref([
       name: 'nothing'
     }
   },
-  {
-    condition: {
-      type: 'regex',
-      name: 'regex'
-    },
-    action: {
-      type: 'tag',
-      name: 'tag'
-    }
-  }
 ]);
 
 const addRule = () => {
-  rules.push({
+  rules.value.push({
     condition: {
       type: 'none',
       name: 'nothing'

@@ -99,7 +99,7 @@ export const actionTypes = [
     },
     {
         id: 'math',
-        name: 'Math',
+        name: 'Score Math',
         description: "Modify message or user score using math operations.",
         matchingKeywords: ['add', 'subtract', 'multiply', 'divide', 'modulo', 'power', 'root', 'function']
     },
@@ -131,7 +131,7 @@ export const actionTypes = [
     {
         id: 'sentimentAnalysis',
         name: 'Sentiment Analysis',
-        description: "Analyze the sentiment of a message.",
+        description: "Analyze the positive/negative sentiment of a message.",
     }
 ]
 

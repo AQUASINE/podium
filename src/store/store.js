@@ -1,8 +1,11 @@
 import {createStore} from "vuex";
+import configurations from "./modules/configurations.js";
 
 const DEBUG_MESSAGES = false;
 const store = createStore({
-    modules: {},
+    modules: {
+        configurations
+    },
     state: {
         isConnected: false,
         connectionString: "localhost:8765",

@@ -22,41 +22,22 @@
     <div v-if="expanded" class="container__rule-details">
       <div class="row__rule-details-header">
         <h2>IF</h2>
-        <v-autocomplete v-model="condition" :items="conditionTypes" item-title="name" item-value="id"
-                        label="Condition Type" outlined>
-          <template v-slot:item="{props, item}">
-            <v-list-item class="item__rule-option" :title="item.title" :subtitle="item.raw.description" v-bind="props">
-            </v-list-item>
-          </template>
-        </v-autocomplete>
+        <RuleSelectAutocomplete label="Condition Type" v-model="condition" :items="conditionTypes"/>
       </div>
-      <div class="container__rule-action">
-        <RuleConfigCard v-if="conditionInfo" :title="conditionInfo.name" :description="conditionInfo.description"
-                        :type="condition">
-        </RuleConfigCard>
-        <div v-else>
-          <RuleConfigCard title="Error" :description="'Could not find rule of type ' + condition" type="'default'">
-          </RuleConfigCard>
-        </div>
-
-      </div>
+      <RuleConfigWrapper :rule="condition" :rule-info="conditionInfo"/>
       <div class="row__rule-details-header">
         <h2>THEN</h2>
-        <v-autocomplete v-model="action" :items="actionTypes" item-title="name" item-value="id" label="Action Type"
-                        outlined>
-
-        </v-autocomplete>
+        <RuleSelectAutocomplete label="Action Type" v-model="action" :items="actionTypes"/>
       </div>
-      <div class="container__rule-condition">
-      </div>
+      <RuleConfigWrapper :rule="action" :rule-info="actionInfo"/>
     </div>
   </div>
 </template>
 <script setup>
 import {computed, ref} from "vue";
-import RegexConfigCard from "./rule/RegexRuleContent.vue";
-import {conditionTypes, actionTypes} from "../rules.js";
-import RuleConfigCard from "./RuleConfigCard.vue";
+import {actionTypes, conditionTypes} from "../rules.js";
+import RuleSelectAutocomplete from "./RuleSelectAutocomplete.vue";
+import RuleConfigWrapper from "./RuleConfigWrapper.vue";
 
 
 const props = defineProps({

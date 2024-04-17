@@ -11,18 +11,31 @@
         Active Configuration
       </div>
       <div class="ml-3 container__configuration-select">
-        <VueSelect :options="['translation-chatbox-app','default']" class="item__configuration-select"></VueSelect>
+        <VueSelect v-bind="activeConfiguration" :options="configurationNames" class="item__configuration-select"></VueSelect>
       </div>
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import VueSelect from 'vue-select'
+import {useStore} from "vuex";
+import {computed} from "vue";
 
-export default {
-  name: 'AppTopbar',
-  components: {VueSelect}
-}
+const store = useStore();
+
+const configurations = store.state.configurations.configurations;
+const activeConfiguration = store.state.configurations.activeConfiguration;
+console.log(configurations);
+console.log(activeConfiguration);
+
+const configurationNames = computed(() => configurations.map((config) => {
+  return config.name
+}));
+
+const activeConfigurationId = computed(() => activeConfiguration.id);
+
+
+
 </script>
 <style>
 
