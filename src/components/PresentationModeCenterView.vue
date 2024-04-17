@@ -28,7 +28,6 @@ const worstChatterScore = computed(() => {
 
 onMounted(() => {
   const rect = threeContainerParent.value.getBoundingClientRect();
-  console.log(rect.width, rect.height);
   const scene = new THREE.Scene();
   const renderer = new THREE.WebGLRenderer();
   // get size of the container
@@ -62,7 +61,6 @@ onMounted(() => {
     cameraRotationStartY = camera.rotation.y;
     cameraRotationStartX = camera.rotation.x;
     scene.add(mrPodium);
-    console.log(gltf);
 
     // find all point lights and set their intensity to 0.5
     mrPodium.traverse((child) => {
