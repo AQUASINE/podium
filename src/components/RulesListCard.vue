@@ -8,7 +8,9 @@
         Start
       </i>
     </div>
-    <vue-draggable-next>
+    <vue-draggable-next
+        handle=".handle__rule-tile"
+    >
       <RuleTile :rule="rule" v-for="rule in rules"/>
     </vue-draggable-next>
     <div class="button__add-rule" @click="addRule">
@@ -58,14 +60,6 @@ const addRule = () => {
 
 </script>
 <style>
-
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 .button__add-rule {
   display: flex;
   align-items: center;

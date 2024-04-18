@@ -52,6 +52,11 @@ import MessageLengthRuleContent from "./rule/MessageLengthRuleContent.vue";
 import MessageScoreRuleContent from "./rule/MessageScoreRuleContent.vue";
 import UserScoreRuleContent from "./rule/UserScoreRuleContent.vue";
 import UserBlacklistRuleContent from "./rule/UserBlacklistRuleContent.vue";
+import UserWhitelistRuleContent from "./rule/UserWhitelistRuleContent.vue";
+import EveryNthRuleContent from "./rule/EveryNthRuleContent.vue";
+import ChanceRuleContent from "./rule/ChanceRuleContent.vue";
+import SeededChanceRuleContent from "./rule/SeededChanceRuleContent.vue";
+import TimeBasedRuleContent from "./rule/TimeBasedRuleContent.vue";
 
 const props = defineProps({
   title: {
@@ -67,6 +72,7 @@ const props = defineProps({
     default: 'default'
   }
 })
+
 
 </script>
 <style scoped>
