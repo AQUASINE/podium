@@ -1,6 +1,6 @@
 <template>
   <div class="container__rule-action">
-    <div v-if="!ruleInfo || rule === 'always'">
+    <div v-if="!ruleInfo">
       <RuleConfigCard title="Error" :description="'Could not find rule of type ' + rule" type="'default'">
       </RuleConfigCard>
     </div>

@@ -74,7 +74,7 @@ export const conditionTypes = [
 export const actionTypes = [
     {
         id: 'nothing',
-        name: 'Do Nothing',
+        name: 'Nothing',
         description: "Simply pass the message through without any modifications.",
     },
     {

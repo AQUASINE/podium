@@ -57,6 +57,8 @@ import EveryNthRuleContent from "./rule/EveryNthRuleContent.vue";
 import ChanceRuleContent from "./rule/ChanceRuleContent.vue";
 import SeededChanceRuleContent from "./rule/SeededChanceRuleContent.vue";
 import TimeBasedRuleContent from "./rule/TimeBasedRuleContent.vue";
+import NothingRuleContent from "./rule/NothingRuleContent.vue";
+import ReplaceRuleContent from "./rule/ReplaceRuleContent.vue";
 
 const props = defineProps({
   title: {

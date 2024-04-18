@@ -6,7 +6,7 @@
           <v-icon icon="mdi-drag"></v-icon>
         </div>
         <div class="divider__tile-vert"></div>
-        <div class="container__tile-info" v-if="conditionInfo">
+        <div class="container__tile-info" v-if="conditionInfo && condition !== 'always'">
           <span class="strong__rule-tile">IF </span>
           <span>{{ conditionInfo?.name }}</span>
           <span class="strong__rule-tile">THEN </span>

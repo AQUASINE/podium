@@ -151,7 +151,7 @@ code {
 }
 
 input[type="number"] {
-  border-radius: 8px;
+  border-radius: 0.25rem;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -163,6 +163,17 @@ input[type="number"] {
   transition: border-color 0.25s;
 }
 
+input[type="text"].text-input {
+  border-radius: 0.25rem;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  height: 30px;
+  padding: 0.2em 0.75em;
+  background-color: var(--bg2);
+  border: 1px solid var(--bg4);
+  transition: border-color 0.25s;
+}
 
 >>> {
 
