@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {comparisonOperators} from "../../rules";
+import {comparisonOperators, extendedComparisonOperators} from "../../rules";
 import {ref} from "vue";
 
 const operator = ref(comparisonOperators[0].id);
