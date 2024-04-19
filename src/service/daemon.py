@@ -313,7 +313,71 @@ async def reconnect():
 def set_configuration():
     global active_configuration
     data = request.json
+
     # TODO: convert data to PodiumConfiguration
+    rules = []
+    for rule in data['rules']:
+        # convert rule to PodiumRule
+
+        action = None
+        if 'action' in rule:
+            actionInfo = rule['action']
+            actionId = actionInfo['id']
+            actionArgs = actionInfo['args']
+            if actionId == 'nothing':
+                action = None
+            elif actionId == 'set':
+                score = actionArgs['score']
+                action = [set_score, score]
+            elif actionId == 'math':
+                operator = actionArgs['operator']
+                score = actionArgs['score']
+                if operator == 'add':
+                    action = [add_score, score]
+                elif operator == 'multiply':
+                    action = [multiply_score, score]
+                elif operator == 'divide':
+                    action = [divide_score, score]
+                elif operator == 'subtract':
+                    action = [subtract_score, score]
+            elif actionId == 'add':
+                score = actionArgs['score']
+                mode = actionArgs['mode']
+                if mode == 'user':
+                    action = [add_user_score, score]
+                if mode == 'message':
+                    action = [add_message_score, score]
+            elif actionId == 'gpt':
+                prompt = actionArgs['prompt']
+                action = [gpt_score, gpt_client, prompt]
+
+        condition = None
+        if 'condition' in rule:
+            conditionInfo = rule['condition']
+            conditionId = conditionInfo['id']
+            conditionArgs = conditionInfo['args']
+            if conditionId == 'nothing':
+                condition = None
+            elif conditionId == 'contains':
+                text = conditionArgs['text']
+                condition = [contains_text, text]
+            elif conditionId == 'regex':
+                regex = conditionArgs['regex']
+                condition = [regex_match, regex]
+            elif conditionId == 'user':
+                user = conditionArgs['user']
+                condition = [user_match, user]
+            elif conditionId == 'message':
+                message = conditionArgs['message']
+                condition = [message_match, message]
+            elif conditionId == 'emote':
+                emote = conditionArgs['emote']
+                condition = [emote_match, emote]
+
+        podium_rule = PodiumRule(rule['name'], condition, action)
+        pass
+
+    active_configuration = PodiumConfiguration(data['name'], data['twitch_channels'], data['youtube_channels'], rules)
     return 'ok'
 
 @app.route('/get_active_configuration')
