@@ -349,6 +349,7 @@ def set_configuration():
                     action = [add_message_score, score]
             elif actionId == 'gpt':
                 prompt = actionArgs['prompt']
+                gpt_client.set_prompt(prompt)
                 action = [gpt_score, gpt_client, prompt]
 
         condition = None
