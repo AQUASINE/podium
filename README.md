@@ -51,7 +51,3 @@ Get your OpenAI key [here](https://platform.openai.com/settings/profile?tab=api-
 # develop
 npm run dev
 ```
-```
--->
-
-## FAQ
