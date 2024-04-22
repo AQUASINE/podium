@@ -7,7 +7,7 @@ import os
 import threading as th
 import urllib.request
 from podium import *
-from flask import Flask
+from flask import Flask, request
 from gptclient import GPTClient
 from websockets.server import serve
 from websocket import create_connection
@@ -314,11 +314,9 @@ def set_configuration():
     global active_configuration
     data = request.json
 
-    # TODO: convert data to PodiumConfiguration
     rules = []
     for rule in data['rules']:
         # convert rule to PodiumRule
-
         action = None
         if 'action' in rule:
             actionInfo = rule['action']
@@ -385,6 +383,18 @@ def set_configuration():
 def get_active_configuration():
     return active_configuration
 
+@app.route('/set_twitch_channels', methods=['POST'])
+async def set_twitch_channels():
+    data = request.json
+    await bot.join_channels(data)
+    return 'ok'
+
+@app.route('/set_youtube_channels', methods=['POST'])
+def set_youtube_channels():
+    data = request.json
+    youtube.youtube_connect(data['channel_id'], data['channel_name'])
+    return 'ok'
+
 @app.route('/get_configurations')
 def get_configurations():
     return configurations
@@ -392,8 +402,6 @@ def get_configurations():
 @app.route('/get_emotes')
 def get_emotes():
     return emote_sets
-
-
 
 processing_thread = None
 gpt_thread = None
