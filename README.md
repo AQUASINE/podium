@@ -13,9 +13,10 @@ Twitch/YouTube ranking client intended to help streamers develop interesting app
 ## Features
 
 - Create ruleset pipelines that will rank your chatters based on their activity in chat.
-- Find the best messages and the most active chatters
+- Find the best messages and best users based on whatever criteria you want.
 
-## TODO
+## TODO 
+- [ ] Add items to todo list
 
 
 ## Quick Setup
@@ -30,7 +31,23 @@ cd podium
 # install dependencies
 pip install -r requirements.txt
 npm install
+```
 
+Note that before running the project, you need to create a `config.json` file in the root directory with the following content:
+    
+```json
+{
+  "TWITCH_OAUTH": "oauth:xxxxxxxxxxxxxxxxxx",
+  "BOT_USERNAME": "your_twitch_username",
+  "OPENAI_KEY": "sk-xxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+Generate your Twitch OAuth token [here](https://twitchapps.com/tmi/), and use the account name you used to generate the token as `BOT_USERNAME`.
+
+Get your OpenAI key [here](https://platform.openai.com/settings/profile?tab=api-keys).
+
+```sh
 # develop
 npm run dev
 ```

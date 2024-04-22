@@ -22,14 +22,16 @@ nltk.download([
     'brown'
 ])
 
-BOT_USERNAME = 'AQUASINE'
 YOUTUBE_FETCH_INTERVAL = 1
+BOT_USERNAME = 'AQUASINE'
 
 # try to read bot token from saved-credentials.json
 try:
     with open('saved-credentials.json', 'r') as f:
         credentials = json.load(f)
         BOT_TOKEN = credentials['TWITCH_OAUTH']
+        if 'BOT_USERNAME' in credentials:
+            BOT_USERNAME = credentials['BOT_USERNAME']
 except FileNotFoundError:
     print("saved-credentials.json not found. Using config.json")
     # read bot token from config.json. if it doesn't exist, tell the user to create it
@@ -38,8 +40,9 @@ except FileNotFoundError:
             config = json.load(f)
             try:
                 BOT_TOKEN = config['TWITCH_OAUTH']
+                BOT_USERNAME = config['BOT_USERNAME']
             except KeyError:
-                print("config.json is missing the TWITCH_OAUTH key. Please create a bot account and add the OAuth token to config.json")
+                print("config.json is missing the TWITCH_OAUTH or BOT_USERNAME key. Please create a bot account and add the OAuth token and bot username to config.json")
                 exit(1)
             try:
                 OPENAI_KEY = config['OPENAI_KEY']
