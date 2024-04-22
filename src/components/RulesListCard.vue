@@ -8,8 +8,12 @@
         Start
       </i>
     </div>
-    <RuleTile :rule="testRule"/>
-    <div class="button__add-rule">
+    <vue-draggable-next
+        handle=".handle__rule-tile"
+    >
+      <RuleTile :rule="rule" v-for="rule in rules"/>
+    </vue-draggable-next>
+    <div class="button__add-rule" @click="addRule">
       <v-icon icon="mdi-plus"></v-icon>
       Add Rule
     </div>
@@ -22,27 +26,40 @@
 </template>
 <script setup>
 import RuleTile from "./RuleTile.vue";
+import {VueDraggableNext} from "vue-draggable-next";
+import {ref} from "vue";
+import { v4 as uuidv4 } from "uuid";
 
-const testRule = {
-  condition: {
-    type: 'none',
-    name: 'nothing'
+const rules = ref([
+  {
+    id: uuidv4(),
+    condition: {
+      type: 'none',
+      name: 'nothing'
+    },
+    action: {
+      type: 'none',
+      name: 'nothing'
+    }
   },
-  action: {
-    type: 'none',
-    name: 'nothing'
-  }
+]);
+
+const addRule = () => {
+  rules.value.push({
+    condition: {
+      type: 'none',
+      name: 'nothing'
+    },
+    action: {
+      type: 'none',
+      name: 'nothing'
+    }
+  })
+  console.log('Added rule');
 }
+
 </script>
 <style>
-
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 .button__add-rule {
   display: flex;
   align-items: center;

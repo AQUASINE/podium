@@ -1,7 +1,7 @@
 const configurations = {
     namespaced: true,
     state: {
-        active: 'abcdsdf',
+        activeId: 'abcdsdf',
         configurations: [
             {
                 id: "abcdsdf",
@@ -44,13 +44,13 @@ const configurations = {
         ]
     },
     getters: {
-        activeConfigurationObject(state) {
-            return state.configurations.find(c => c.id === state.active);
+        activeConfiguration(state) {
+            return state.configurations.find(c => c.id === state.activeId);
         }
     },
     mutations: {
-        setActiveConfiguration(state, payload) {
-            state.active = payload;
+        setActiveId(state, payload) {
+            state.activeId = payload;
         },
         setConfigurations(state, payload) {
             state.configurations = payload;
@@ -65,3 +65,5 @@ const configurations = {
         }
     },
 }
+
+export default configurations;

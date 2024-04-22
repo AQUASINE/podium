@@ -18,7 +18,7 @@
 <script setup>
 import DataSourceCard from "./DataSourceCard.vue";
 import {ref} from "vue";
-import RulesCard from "./RulesCard.vue";
+import RulesCard from "./RulesListCard.vue";
 import IconSectionHeader from "./IconSectionHeader.vue";
 import OutputCard from "./OutputCard.vue";
 

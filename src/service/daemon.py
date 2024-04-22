@@ -7,7 +7,7 @@ import os
 import threading as th
 import urllib.request
 from podium import *
-from flask import Flask
+from flask import Flask, request
 from gptclient import GPTClient
 from websockets.server import serve
 from websocket import create_connection
@@ -22,14 +22,16 @@ nltk.download([
     'brown'
 ])
 
-BOT_USERNAME = 'AQUASINE'
 YOUTUBE_FETCH_INTERVAL = 1
+BOT_USERNAME = 'AQUASINE'
 
 # try to read bot token from saved-credentials.json
 try:
     with open('saved-credentials.json', 'r') as f:
         credentials = json.load(f)
         BOT_TOKEN = credentials['TWITCH_OAUTH']
+        if 'BOT_USERNAME' in credentials:
+            BOT_USERNAME = credentials['BOT_USERNAME']
 except FileNotFoundError:
     print("saved-credentials.json not found. Using config.json")
     # read bot token from config.json. if it doesn't exist, tell the user to create it
@@ -38,8 +40,9 @@ except FileNotFoundError:
             config = json.load(f)
             try:
                 BOT_TOKEN = config['TWITCH_OAUTH']
+                BOT_USERNAME = config['BOT_USERNAME']
             except KeyError:
-                print("config.json is missing the TWITCH_OAUTH key. Please create a bot account and add the OAuth token to config.json")
+                print("config.json is missing the TWITCH_OAUTH or BOT_USERNAME key. Please create a bot account and add the OAuth token and bot username to config.json")
                 exit(1)
             try:
                 OPENAI_KEY = config['OPENAI_KEY']
@@ -313,12 +316,87 @@ async def reconnect():
 def set_configuration():
     global active_configuration
     data = request.json
-    # TODO: convert data to PodiumConfiguration
+
+    rules = []
+    for rule in data['rules']:
+        # convert rule to PodiumRule
+        action = None
+        if 'action' in rule:
+            actionInfo = rule['action']
+            actionId = actionInfo['id']
+            actionArgs = actionInfo['args']
+            if actionId == 'nothing':
+                action = None
+            elif actionId == 'set':
+                score = actionArgs['score']
+                action = [set_score, score]
+            elif actionId == 'math':
+                operator = actionArgs['operator']
+                score = actionArgs['score']
+                if operator == 'add':
+                    action = [add_score, score]
+                elif operator == 'multiply':
+                    action = [multiply_score, score]
+                elif operator == 'divide':
+                    action = [divide_score, score]
+                elif operator == 'subtract':
+                    action = [subtract_score, score]
+            elif actionId == 'add':
+                score = actionArgs['score']
+                mode = actionArgs['mode']
+                if mode == 'user':
+                    action = [add_user_score, score]
+                if mode == 'message':
+                    action = [add_message_score, score]
+            elif actionId == 'gpt':
+                prompt = actionArgs['prompt']
+                gpt_client.set_prompt(prompt)
+                action = [gpt_score, gpt_client, prompt]
+
+        condition = None
+        if 'condition' in rule:
+            conditionInfo = rule['condition']
+            conditionId = conditionInfo['id']
+            conditionArgs = conditionInfo['args']
+            if conditionId == 'nothing':
+                condition = None
+            elif conditionId == 'contains':
+                text = conditionArgs['text']
+                condition = [contains_text, text]
+            elif conditionId == 'regex':
+                regex = conditionArgs['regex']
+                condition = [regex_match, regex]
+            elif conditionId == 'user':
+                user = conditionArgs['user']
+                condition = [user_match, user]
+            elif conditionId == 'message':
+                message = conditionArgs['message']
+                condition = [message_match, message]
+            elif conditionId == 'emote':
+                emote = conditionArgs['emote']
+                condition = [emote_match, emote]
+
+        podium_rule = PodiumRule(rule['name'], condition, action)
+        pass
+
+    active_configuration = PodiumConfiguration(data['name'], data['twitch_channels'], data['youtube_channels'], rules)
     return 'ok'
 
 @app.route('/get_active_configuration')
 def get_active_configuration():
     return active_configuration
+
+@app.route('/set_twitch_channels', methods=['POST'])
+async def set_twitch_channels():
+    data = request.json
+    await bot.join_channels(data)
+    return 'ok'
+
+@app.route('/set_youtube_channels', methods=['POST'])
+def set_youtube_channels():
+    data = request.json
+    youtube.youtube_connect(data['channel_id'], data['channel_name'])
+    return 'ok'
 
 @app.route('/get_configurations')
 def get_configurations():
@@ -327,8 +405,6 @@ def get_configurations():
 @app.route('/get_emotes')
 def get_emotes():
     return emote_sets
-
-
 
 processing_thread = None
 gpt_thread = None

@@ -31,7 +31,7 @@ export const conditionTypes = [
     },
     {
         id: 'score',
-        name: 'Current Message Score',
+        name: 'Message Score',
         description: "Match messages based on the message's current score.",
     },
     {
@@ -74,7 +74,7 @@ export const conditionTypes = [
 export const actionTypes = [
     {
         id: 'nothing',
-        name: 'Do Nothing',
+        name: 'Nothing',
         description: "Simply pass the message through without any modifications.",
     },
     {
@@ -99,7 +99,7 @@ export const actionTypes = [
     },
     {
         id: 'math',
-        name: 'Math',
+        name: 'Score Math',
         description: "Modify message or user score using math operations.",
         matchingKeywords: ['add', 'subtract', 'multiply', 'divide', 'modulo', 'power', 'root', 'function']
     },
@@ -131,6 +131,46 @@ export const actionTypes = [
     {
         id: 'sentimentAnalysis',
         name: 'Sentiment Analysis',
-        description: "Analyze the sentiment of a message.",
+        description: "Analyze the positive/negative sentiment of a message.",
     }
 ]
+
+export const comparisonOperators = [
+    {
+        id: '==',
+        name: 'Equal to',
+    },
+    {
+        id: '!=',
+        name: 'Not equal to',
+    },
+    {
+        id: '>',
+        name: 'Greater than',
+    },
+    {
+        id: '>=',
+        name: 'Greater than or equal to',
+    },
+    {
+        id: '<',
+        name: 'Less than',
+    },
+    {
+        id: '<=',
+        name: 'Less than or equal to',
+    },
+]
+
+export const extendedComparisonOperators = [
+    ...comparisonOperators,
+    {
+        id: 'dist >',
+        name: 'With distance greater than',
+    },
+    {
+        id: 'dist <',
+        name: 'With distance less than',
+    },
+]
+

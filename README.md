@@ -1,43 +1,56 @@
-# electron-vite-vue
+# Podium Live
 
-🥳 Really simple `Electron` + `Vue` + `Vite` boilerplate.
+Twitch/YouTube ranking client intended to help streamers develop interesting apps for their viewers.
 
 <!-- [![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite) -->
 <!-- [![Netlify Status](https://api.netlify.com/api/v1/badges/ae3863e3-1aec-4eb1-8f9f-1890af56929d/deploy-status)](https://app.netlify.com/sites/electron-vite/deploys) -->
 <!-- [![GitHub license](https://img.shields.io/github/license/caoxiemeihao/electron-vite-vue)](https://github.com/electron-vite/electron-vite-vue/blob/main/LICENSE) -->
 <!-- [![GitHub stars](https://img.shields.io/github/stars/caoxiemeihao/electron-vite-vue?color=fa6470)](https://github.com/electron-vite/electron-vite-vue) -->
 <!-- [![GitHub forks](https://img.shields.io/github/forks/caoxiemeihao/electron-vite-vue)](https://github.com/electron-vite/electron-vite-vue) -->
-[![GitHub Build](https://github.com/electron-vite/electron-vite-vue/actions/workflows/build.yml/badge.svg)](https://github.com/electron-vite/electron-vite-vue/actions/workflows/build.yml)
-[![GitHub Discord](https://img.shields.io/badge/chat-discord-blue?logo=discord)](https://discord.gg/sRqjYpEAUK)
+[![GitHub Build](https://github.com/AQUASINE/podium/actions/workflows/build.yml/badge.svg)](https://github.com/electron-vite/electron-vite-vue/actions/workflows/build.yml)
+[![Static Badge](https://img.shields.io/badge/Documentation-blue)](https://docs.podiumlive.dev/)
 
 ## Features
 
-📦 Out of the box  
-🎯 Based on the official [template-vue-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-vue-ts), less invasive  
-🌱 Extensible, really simple directory structure  
-💪 Support using Node.js API in Electron-Renderer  
-🔩 Support C/C++ native addons  
-🖥 It's easy to implement multiple windows  
+- Create ruleset pipelines that will rank your chatters based on their activity in chat.
+- Find the best messages and best users based on whatever criteria you want.
+
+## TODO 
+- [ ] Add items to todo list
+
 
 ## Quick Setup
 
 ```sh
 # clone the project
-git clone https://github.com/electron-vite/electron-vite-vue.git
+git clone https://github.com/AQUASINE/podium.git
 
 # enter the project directory
-cd electron-vite-vue
+cd podium
 
-# install dependency
+# install dependencies
+pip install -r requirements.txt
 npm install
+```
 
+Note that before running the project, you need to create a `config.json` file in the root directory with the following content:
+    
+```json
+{
+  "TWITCH_OAUTH": "oauth:xxxxxxxxxxxxxxxxxx",
+  "BOT_USERNAME": "your_twitch_username",
+  "OPENAI_KEY": "sk-xxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+Generate your Twitch OAuth token [here](https://twitchapps.com/tmi/), and use the account name you used to generate the token as `BOT_USERNAME`.
+
+Get your OpenAI key [here](https://platform.openai.com/settings/profile?tab=api-keys).
+
+```sh
 # develop
 npm run dev
 ```
-
-## Debug
-
-![electron-vite-react-debug.gif](https://github.com/electron-vite/electron-vite-react/blob/main/electron-vite-react-debug.gif?raw=true)
 
 ## Directory
 
@@ -74,6 +87,3 @@ export default {
 -->
 
 ## FAQ
-
-- [C/C++ addons, Node.js modules - Pre-Bundling](https://github.com/electron-vite/vite-plugin-electron-renderer#dependency-pre-bundling)
-- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron-renderer#dependencies-vs-devdependencies)

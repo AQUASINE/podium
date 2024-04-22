@@ -13,10 +13,10 @@
   </div>
 </template>
 <script setup>
-import PrimaryCenterView from "./components/PrimaryCenterView.vue"
+import PrimaryCenterView from "../PrimaryCenterView.vue"
 import {ref} from "vue";
-import PresentationModeCenterView from "./components/PresentationModeCenterView.vue";
-import SettingsCenterView from "./components/SettingsCenterView.vue";
+import PresentationModeCenterView from "../PresentationModeCenterView.vue";
+import SettingsCenterView from "../SettingsCenterView.vue";
 
 const tabs = [
   {
@@ -46,7 +46,6 @@ const handleTabClick = (tabName) => {
   flex-direction: column;
   justify-content: left;
   align-items: center;
-
   text-align: left;
   overflow: auto;
   max-height: calc(100vh - 3rem);
@@ -55,6 +54,8 @@ const handleTabClick = (tabName) => {
 .container__middle-main {
   overflow-y: auto;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .tabs__middle {

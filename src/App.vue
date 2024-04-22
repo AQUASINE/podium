@@ -22,7 +22,7 @@ import LeftSidebar from "./components/LeftSidebar.vue";
 import UsersView from "./components/UsersView.vue";
 import {mapState} from "vuex";
 import AppTopbar from "./components/AppTopbar.vue";
-import CenterPanel from "./CenterPanel.vue";
+import CenterPanel from "./components/rule/CenterPanel.vue";
 
 export default {
   name: 'App',

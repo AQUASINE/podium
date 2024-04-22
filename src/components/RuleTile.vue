@@ -1,14 +1,20 @@
 <template>
-  <div class="tile__rule">
+  <div class="tile__rule" draggable="false">
     <div class="row__rule">
       <div class="tile__rule-header" @click="toggleExpanded">
         <div class="handle__rule-tile">
           <v-icon icon="mdi-drag"></v-icon>
         </div>
         <div class="divider__tile-vert"></div>
-        <div class="container__tile-info">
+        <div class="container__tile-info" v-if="conditionInfo && condition !== 'always'">
+          <span class="strong__rule-tile">IF </span>
+          <span>{{ conditionInfo?.name }}</span>
+          <span class="strong__rule-tile">THEN </span>
+          <span>{{ actionInfo?.name }}</span>
+        </div>
+        <div class="container__tile-info" v-else>
           <span class="strong__rule-tile">DO </span>
-          <span>{{ action.name }}</span>
+          <span>{{ actionInfo?.name }}</span>
         </div>
         <v-icon :icon="!expanded ? 'mdi-chevron-right' : 'mdi-chevron-down'"></v-icon>
       </div>
@@ -16,41 +22,22 @@
     <div v-if="expanded" class="container__rule-details">
       <div class="row__rule-details-header">
         <h2>IF</h2>
-        <v-autocomplete v-model="condition" :items="conditionTypes" item-title="name" item-value="id"
-                        label="Condition Type" outlined>
-          <template v-slot:item="{props, item}">
-            <v-list-item class="item__rule-option" :title="item.title" :subtitle="item.raw.description" v-bind="props">
-            </v-list-item>
-          </template>
-        </v-autocomplete>
+        <RuleSelectAutocomplete label="Condition Type" v-model="condition" :items="conditionTypes"/>
       </div>
-      <div class="container__rule-action">
-        <RuleConfigCard v-if="conditionInfo" :title="conditionInfo.name" :description="conditionInfo.description"
-                        :type="condition">
-        </RuleConfigCard>
-        <div v-else>
-          <RuleConfigCard title="Error" :description="'Could not find rule of type ' + condition" type="'default'">
-          </RuleConfigCard>
-        </div>
-
-      </div>
+      <RuleConfigWrapper :rule="condition" :rule-info="conditionInfo"/>
       <div class="row__rule-details-header">
         <h2>THEN</h2>
-        <v-autocomplete v-model="action" :items="actionTypes" item-title="name" item-value="id" label="Action Type"
-                        outlined>
-
-        </v-autocomplete>
+        <RuleSelectAutocomplete label="Action Type" v-model="action" :items="actionTypes"/>
       </div>
-      <div class="container__rule-condition">
-      </div>
+      <RuleConfigWrapper :rule="action" :rule-info="actionInfo"/>
     </div>
   </div>
 </template>
 <script setup>
 import {computed, ref} from "vue";
-import RegexConfigCard from "./RegexRuleContent.vue";
-import {conditionTypes, actionTypes} from "../rules.js";
-import RuleConfigCard from "./RuleConfigCard.vue";
+import {actionTypes, conditionTypes} from "../rules.js";
+import RuleSelectAutocomplete from "./RuleSelectAutocomplete.vue";
+import RuleConfigWrapper from "./RuleConfigWrapper.vue";
 
 
 const props = defineProps({
@@ -69,7 +56,7 @@ const action = ref(rule.value.action.name);
 const condition = ref(rule.value.condition);
 
 const actionInfo = computed(() => {
-  return actionTypes.find(a => a.id === action.value.id);
+  return actionTypes.find(a => a.id === action.value);
 })
 
 const conditionInfo = computed(() => {
@@ -135,6 +122,12 @@ input[type=number]::-webkit-outer-spin-button {
 .strong__rule-tile {
   font-weight: 900;
   color: var(--text-mute);
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.strong__rule-tile:first-child {
+  margin-left: 0;
 }
 
 .tile__rule-header {

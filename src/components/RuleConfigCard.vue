@@ -13,17 +13,52 @@
       <ContainsRuleContent v-else-if="type === 'contains'"/>
       <ExactMatchRuleContent v-else-if="type === 'exactMatch'"/>
       <FuzzyMatchRuleContent v-else-if="type === 'fuzzyMatch'"/>
+      <MessageLengthRuleContent v-else-if="type === 'length'"/>
+      <MessageScoreRuleContent v-else-if="type === 'score'"/>
+      <UserScoreRuleContent v-else-if="type === 'userscore'"/>
+      <UserBlacklistRuleContent v-else-if="type === 'userblacklist'"/>
+      <UserWhitelistRuleContent v-else-if="type === 'userwhitelist'"/>
+      <EveryNthRuleContent v-else-if="type === 'everynth'"/>
+      <ChanceRuleContent v-else-if="type === 'chance'"/>
+      <SeededChanceRuleContent v-else-if="type === 'seededchance'"/>
+      <TimeBasedRuleContent v-else-if="type === 'timebased'"/>
+      <NothingRuleContent v-else-if="type === 'nothing'"/>
+      <ReplaceRuleContent v-else-if="type === 'replace'"/>
+      <RegexReplaceRuleContent v-else-if="type === 'regexreplace'"/>
+      <DropMessageRuleContent v-else-if="type === 'dropmessage'"/>
+      <SetScoreRuleContent v-else-if="type === 'set'"/>
+      <MathRuleContent v-else-if="type === 'math'"/>
+      <AddRuleContent v-else-if="type === 'add'"/>
+      <AddTagRuleContent v-else-if="type === 'addtag'"/>
+      <RemoveTagRuleContent v-else-if="type === 'removetag'"/>
+      <SevenTvRemoveRuleContent v-else-if="type === '7tvremove'"/>
+      <GPTRankRuleContent v-else-if="type === 'gptrank'"/>
+      <SentimentAnalysisRuleContent v-else-if="type === 'sentimentanalysis'"/>
+
+
       <DefaultRuleContent v-else :type="type"/>
     </div>
   </div>
 </template>
 <script setup>
 import {defineProps} from 'vue';
-import DefaultRuleContent from "./DefaultRuleContent.vue";
-import RegexRuleContent from "./RegexRuleContent.vue";
-import AlwaysRuleContent from "./AlwaysRuleContent.vue";
-import ContainsRuleContent from "./ContainsRuleContent.vue";
-import ExactMatchRuleContent from "./ExactMatchRuleContent.vue";
+import DefaultRuleContent from "./rule/DefaultRuleContent.vue";
+import RegexRuleContent from "./rule/RegexRuleContent.vue";
+import AlwaysRuleContent from "./rule/AlwaysRuleContent.vue";
+import ContainsRuleContent from "./rule/ContainsRuleContent.vue";
+import ExactMatchRuleContent from "./rule/ExactMatchRuleContent.vue";
+import FuzzyMatchRuleContent from "./rule/FuzzyMatchRuleContent.vue";
+import MessageLengthRuleContent from "./rule/MessageLengthRuleContent.vue";
+import MessageScoreRuleContent from "./rule/MessageScoreRuleContent.vue";
+import UserScoreRuleContent from "./rule/UserScoreRuleContent.vue";
+import UserBlacklistRuleContent from "./rule/UserBlacklistRuleContent.vue";
+import UserWhitelistRuleContent from "./rule/UserWhitelistRuleContent.vue";
+import EveryNthRuleContent from "./rule/EveryNthRuleContent.vue";
+import ChanceRuleContent from "./rule/ChanceRuleContent.vue";
+import SeededChanceRuleContent from "./rule/SeededChanceRuleContent.vue";
+import TimeBasedRuleContent from "./rule/TimeBasedRuleContent.vue";
+import NothingRuleContent from "./rule/NothingRuleContent.vue";
+import ReplaceRuleContent from "./rule/ReplaceRuleContent.vue";
 
 const props = defineProps({
   title: {
@@ -39,6 +74,7 @@ const props = defineProps({
     default: 'default'
   }
 })
+
 
 </script>
 <style scoped>

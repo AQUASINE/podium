@@ -177,7 +177,7 @@ if __name__ == '__main__':
     gpt_client.enqueue_eval_async([
         PodiumRuleResult("I am an epic gamer", 0, [], {}),
         PodiumRuleResult("Video games are for nerds", 0, [], {}),
-        PodiumRuleResult("KILL YOURSELF", 0, [], {}),
+        PodiumRuleResult("UNALIVE YOURSELF", 0, [], {})
     ])
 
     
