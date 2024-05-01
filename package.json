@@ -52,7 +52,7 @@
     "@highlightjs/vue-plugin": "^2.1.0",
     "chartjs": "^0.3.24",
     "codemirror": "^6.0.1",
-    "electron-store": "^8.2.0",
+    "electron-store": "^9.0.0",
     "gh-pages": "^6.1.1",
     "highlight.js": "^11.9.0",
     "highlightjs": "^9.16.2",
